@@ -1,0 +1,60 @@
+.indicator-box {
+    display: flex;
+    width: 100%;
+    height: auto;
+    padding: 15px 20px 15px 20px;
+    justify-content: space-between;
+}
+
+.indicator {
+    display: flex;
+    width: 32%;
+    height: auto;
+    flex-direction: column;
+    background-color: rgb(255,255,255);
+    justify-content: center;
+    padding: 15px 15px 15px 15px;
+    border-radius: 15px;
+}
+
+.indicator__title {
+    display: block;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    font-size: 1.30em;
+    font-weight: 500;
+    color: rgb(60,60,60);
+}
+
+.indicator__value {
+    display: block;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    font-size: 2em;
+    font-weight: 500;
+    color: rgb(60,60,60);
+    padding: 15px 0 15px 0;
+}
+
+.indicator__link {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    background-color: rgb(243,241,245);
+    justify-content: center;
+    padding: 10px;
+    margin: auto;
+    border-radius: 100%;
+}
+
+.indicator__link:hover {
+    background-color: rgb(194, 187, 200);
+}
+
+.indicator__link img {
+    display: flex;
+    width: 30px;
+    height: 30px;
+}

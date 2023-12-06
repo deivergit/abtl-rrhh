@@ -1,0 +1,48 @@
+.box-formularios {
+    display: flex;
+    width: calc(100% - 40px);
+    height: auto;
+    margin: 20px auto 20px auto;
+    justify-content: space-between;
+    flex-wrap: wrap; 
+}
+
+.formulario-ct {
+    display: flex;
+    width: 45%;
+    height: auto;
+    background-color: rgb(255, 255, 255);
+    flex-direction: column;
+}
+
+.formulario-ct input {
+    display: flex;
+    width: 70%;
+    height: 40px;
+    background-color: rgb(243, 245, 248);
+    flex-direction: column;
+    margin: 5px auto 20px auto;
+    text-align: center;
+}
+
+.formulario-ct button {
+    width: 50%;
+    background-color: rgb(12, 169, 144);
+    color: rgb(255, 255, 255);
+    margin: auto;
+    padding: 10px 5px 10px 5px;
+    font-size: 1em;
+    outline: none;
+    border: none;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.formulario-ct p {
+    display: flex;
+    width: 90%;
+    height: auto;
+    margin: 10px auto 10px auto;
+    justify-content: center;
+    text-align: center;
+}

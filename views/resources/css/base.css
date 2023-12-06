@@ -1,0 +1,102 @@
+.img {
+    display: block;
+    width: 100px;
+    border: 3px solid rgb(206, 206, 206);
+}
+
+/* GENERAL STYLES */
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+html,body {
+    height: 100%;
+    background: rgb(243,245,248);
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+
+li {
+    list-style-type: none;
+}
+
+.title img {
+    margin-left: 15px;
+}
+
+/* VARIABLES */
+
+:root {
+    --formulario-color-primario: rgb(54, 54, 54);
+    --primary-color-button: rgb(31, 196, 245);
+    --secondary-color-button: rgb(20,20,20);
+    --red-color-button: rgb(20,20,20);
+    --green-color-button: rgb(20,20,20);
+    --main-font-family: 'Roboto', sans-serif;
+    --inpu-main-shadow: rgb(231, 231, 231);
+}
+
+/* LAYOUD */
+
+.main-container {
+    display: flex;
+    width: 100%;
+    min-height: 100%;
+    position: relative;
+    align-items: flex-start;
+}
+
+.container {
+    display: inline-flex;
+    width: 100%;
+    height: auto;
+    position: relative;
+    flex-wrap: wrap;
+}
+
+.controllers {
+    display: flex;
+    width: 100%;
+    padding: 20px 35px 0 20px;
+    
+}
+
+.controllers button {
+    background: rgb(12, 169, 144);
+    outline: none;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    padding: 5px;
+}
+
+.cuadro-busqueda {
+    display: flex;
+    width: 100%;
+    height: auto;
+    justify-content: space-evenly;
+}
+
+.avi {
+    width: 100%;
+    height: auto;
+    margin: 0;
+}
+
+.avi-a {
+    width: 100%;
+    height: auto;
+    font-size: 1em;
+    margin-left: 0;
+    column-span: 4;
+}

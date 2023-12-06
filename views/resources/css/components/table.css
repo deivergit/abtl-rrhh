@@ -1,0 +1,194 @@
+.table {
+    width: calc(100% - 40px);
+    height: auto;
+    margin: 20px auto 0 auto;
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    border-collapse: collapse;
+    overflow: hidden;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* CABECERA */
+
+.thead {
+    display: flex;
+    width: 100%;
+}
+
+.thead__tr {
+    display: flex;
+    width: 100%;
+    background-color: rgb(42, 49, 64);
+    color: rgb(255, 255, 255);
+    table-layout: fixed;
+}
+
+.thead__th {
+    display: flex;
+    width: 100%;
+    padding: 18px 18px 18px 20px;
+    text-transform: capitalize;
+    table-layout: fixed;
+    font-weight: 500;
+    white-space: nowrap;
+    justify-content: center;
+}
+
+/* CUERPO */
+
+.tbody .tbody_tr:nth-child(2n) {
+    background-color: rgb(238, 238, 238);
+}
+
+.tbody .tbody__td {
+    width: 100%;
+    display: flex; /* si lo quitas se acomoda el responsibe*/
+    padding: 5px 0 5px 0;
+    font-size: 0.90em;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.tbody__tr {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.tbody .tbody_tr:hover {
+    background-color: rgb(270, 270, 270);
+}
+
+tr:nth-child(2n) {
+    background-color: rgb(240, 240, 240);
+}
+
+.table img {
+    width: 45px;
+    height: auto;
+    border-radius: 100%;
+    margin: auto;
+}
+
+.ACTIVO, .EGRESADO, .JUBILADO, .COMISION, .INCAPACITADO {
+    color: rgb(255, 255, 255);
+}
+
+.ACTIVO {
+    background-color: rgb(12,169,144);
+}
+
+.EGRESADO {
+    background-color: rgb(249, 0, 0);
+}
+
+.JUBILADO {
+    background-color: rgb(200, 119, 20);
+}
+
+.COMISION {
+    background-color: rgb(20, 47, 200);
+}
+
+.INCAPACITADO {
+    background-color: rgb(176, 255, 18);
+}
+
+
+
+.NO {
+    display: flex;
+    width: auto;
+    height: auto;
+    margin: auto;
+    padding: 5px 5px 5px 5px;
+    justify-content: center;
+    background-color: rgb(255, 0, 0);
+    text-align: center;
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+tbody .icon-action {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    flex-direction: row;
+    margin: 0 3px 0 3px;
+} 
+
+@media (max-width: 950px) {
+
+    .table {
+        table-layout: fixed;
+        width: 90%;
+        display: flex;
+        border-collapse: collapse;
+        table-layout: fixed;
+        margin-bottom: 80px;
+    }
+
+    .thead {
+        display: none;
+    }
+
+    .tbody {
+        width: 100%;
+    }
+
+    .tbody .tbody__td {
+        display: inline-flex; /* si lo quitas se acomoda el responsibe*/
+        justify-content: space-between;  /*  colocando aqui el atriibuto si manda a los lados las celdas  */
+    }
+
+    .tbody__tr {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .tbody__td {
+        display: flex;
+        padding: 15px 15px 15px 15px;
+        justify-content: space-between;
+    }
+
+    .tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 15px 15px 15px;
+    }
+
+    .tbody__td::before {
+        content: attr(data-label);
+    }
+
+    tbody {
+        width: 100%;
+    }
+
+    .ACREDITADO {
+        width: 100%;
+        padding: 10px 0 10px 0;
+    }
+
+    .tbody .icon-action {
+        width: 60px;
+        height: auto;
+        text-align: center;
+        margin-left: -160px;
+    }
+
+    .box-action {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin: 0;
+        padding: 0;
+    }
+
+}
