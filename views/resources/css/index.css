@@ -14,7 +14,7 @@
 }
 
 form {
-    width: 500px;
+    width: 300px;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -55,7 +55,7 @@ input[type=text] , input[type=password], input[type=submit] {
     color: rgb(88, 88, 88);
     justify-content: center;
     display: flex;
-    width: 70%;
+    width: 100%;
     height: 40px;
     outline: none;
     border: none;
@@ -89,8 +89,19 @@ input[type=submit]:hover {
     text-align: center;
 }
 
-
 /* VALIDATIONS */
+
+form .login-validation-box {
+    display: flex;
+    width: 100%;
+    height: auto;
+    background-color: rgb(234, 89, 89);
+    color: rgb(0, 0, 0);
+    justify-content: center;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
 
 /* ---------------------------------------- */
 
@@ -125,6 +136,13 @@ input[type=submit]:hover {
 
 .warning-password {
     margin: -15px 0 15px 0;
+}
+
+.login-validation-box {
+    display: flex;
+    width: 100%;
+    height: auto;
+    background-color: red;
 }
 
 @media only screen and (max-width: 1150px) {

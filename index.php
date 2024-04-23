@@ -16,11 +16,11 @@
     <main class="main-container">
         <form method="POST" enctype="multipart/form-data">
             <img src="./views/resources/images/LOGO-ALCALDIA-OCUMARE-BORDE-BLANCO.png" alt="">
+            <h3>Iniciar sesión</h3>
             <?php
             include("./config/database.php");
             include("./controllers/iniciar-sesion-controller.php");
             ?>
-            <h3>Iniciar sesión</h3>
             <input type="text" name="numero_documento" placeholder="Numero de documento">
             <input type="password" name="contraseña" placeholder="contraseña">
             <input type="submit" value="Entrar" name="btn-entrar">
