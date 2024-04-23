@@ -121,6 +121,10 @@ tbody .icon-action {
     margin: 0 3px 0 3px;
 } 
 
+.not-found {
+    padding: 20px;
+}
+
 @media (max-width: 950px) {
 
     .table {

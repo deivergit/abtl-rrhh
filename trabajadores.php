@@ -327,7 +327,7 @@ include("./views/components/head.php");
                         </select>
                     </div>
                     <div class="box-button">
-                        <button class="button button--save" id="confirmBtn" type="submit"><img
+                        <button class="button button--save" id="confirmBtn" type="submit" name="registrar_trabajador"><img
                                 src="./views/resources/icons/save.svg" alt="icono"></button>
                         <button class="button button--reset" type="reset"><img
                                 src="./views/resources/icons/x.svg" alt="icono"></button>
@@ -355,15 +355,15 @@ include("./views/components/head.php");
                                     }
                                     $numero_documento = $_GET["numero_documento"];
                                     $busqueda = mysqli_query($conn, "SELECT * FROM trabajadores 
-                                    INNER JOIN documentos_identidad ON trabajadores.trabajador_id = documentos_identidad.id_documento_identidad
-                                    INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
-                                    INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
-                                    INNER JOIN escala_remuneracion ON trabajadores.trabajador_id = escala_remuneracion.escala_remuneracion_id
+                                    LEFT JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.id_documento_identidad
+                                    LEFT JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldo_trabajador_id
+                                    LEFT JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
+                                    LEFT JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion_trabajadores.escala_remuneracion_id
                                     WHERE numero_documento = '$numero_documento'");
                                     if ($busqueda->num_rows == 0) {
                                         echo 
                                         "<tr>
-                                            <td colspan='6'>No hay resultados</td>
+                                            <td colspan='6' class='not-found'>No hay resultados</td>
                                         </tr>";
                                     } else {
                                         while ($row = mysqli_fetch_assoc($busqueda)) { ?>
@@ -389,9 +389,7 @@ include("./views/components/head.php");
                     </tr>
                     <?php } ?>
                     <?php } ?>
-                    <?php } else 
-                    echo '<h1>No se puede</h1>';
-                    ?>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>

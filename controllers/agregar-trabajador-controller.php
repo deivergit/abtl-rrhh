@@ -48,7 +48,7 @@ if (isset($_POST["registrar_trabajador"])) {
       $insert_table_escala_remuneracion = "INSERT INTO escala_remuneracion_trabajadores(trabajador_fk, escala_remuneracion) VALUES('$trabajador_fk', '$escala_remuneracion')";
       $conn->query($insert_table_escala_remuneracion);
 
-      $insert_table_sueldos_trabajadores = "INSERT INTO sueldos_trabajadores(trabajador_fk, sueldo) VALUES('$trabajador_fk', '$sueldo')";
+      $insert_table_sueldos_trabajadores = "INSERT INTO sueldos_trabajadores(trabajador_fk, sueldo_base) VALUES('$trabajador_fk', '$sueldo')";
       $conn->query($insert_table_sueldos_trabajadores);
    }
 
