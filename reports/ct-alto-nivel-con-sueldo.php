@@ -24,13 +24,14 @@ $firma_operador = $datos_usuario_consultado['firma'];
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CT-CS-EM</title>
+    <title>CT-CS-AL</title>
     <style>
         @page {
             margin: 0cm;
@@ -185,7 +186,7 @@ $busqueda_trabajador = "SELECT primer_nombre, segundo_nombre, primer_apellido, s
 INNER JOIN documentos_identidad ON trabajadores.trabajador_id = documentos_identidad.id_documento_identidad
 INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
 INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
-WHERE numero_documento = '$trabajador_id' AND estatus='EMPLEADO'";
+WHERE numero_documento = '$trabajador_id' AND estatus='ALTO NIVEL'";
 $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
 ?>
 <?php while ($row= mysqli_fetch_assoc($result_trabajador_constancia)) { ?>
@@ -288,27 +289,25 @@ $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
         <strong><?php echo $letra ?></strong>
         <strong>(Bs <?php echo $row["sueldo"]; ?>).</strong>
     </p>
-    <p class="paragraph paragraph--secound-paragraph">&nbsp; &nbsp; &nbsp; &nbsp; Constancia que se expide a petición de
-        la parte interesada a los
+    <p class="paragraph paragraph--secound-paragraph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Constancia que se expide a petición de la parte interesada a los
         <?php echo $days_of_the_month[date('d')-1] ?> (<?php echo $current_day ?>) días del mes de
         <?php echo $months[date("m")-1] ?> del año dos mil veintitrés
         (<?php echo $current_year ?>).</p>
-    <p class="paragraph paragraph--third-paragraph paragraph--centered-paragraph">Atentamente,</P>
-    <p class="paragraph paragraph--fourth-paragraph paragraph--centered-paragraph"><strong>Lcda. Aura I. Briceño
-            G.</strong><br>
+    <p class="paragraph paragraph--third-paragraph paragraph--centered-paragraph">Atentamente,</p>
+        <p class="paragraph paragraph--fourth-paragraph paragraph--centered-paragraph"><strong>Lcda. Aura I. Briceño G.</strong><br>
         Directora de Recursos Humanos<br>
         Resolución N° 057-2023,<br>
-        Fecha del 09 de febrero del año 2023<br>
-    </p>
+        Fecha del 09 de febrero del año 2023<br></p>
+
 
     <footer class="footer">
-        <span class="validity-time"><i>Válido por tres (3) meses</i></span>
+    <span class="validity-time"><i>Válido por tres (3) meses</i></span>
         <p class="element-box">
             <span class="control-signature"><i>AIBG/<?php echo $firma_operador; ?></i></span>
             <span class="message"><strong>¡Ocumare Ciudad de Emprendedores...!</strong></span>
         </p>
         <address class="footer__address">Av. Miranda cruce con Av. Bolívar, frente el Templo Parroquia San Diego de
-            Alcalá, Casa de Gobierno.<br>
+            Alcalá, Casa de Gobierno<br>
             <a href="tel:+584142437040" class="footer__number-telephone"><strong>Teléfono
                     0414-243.70.40</strong></a><br>
             <a href="mailto:rrhhalcaldialander@gmail.com"
@@ -339,6 +338,6 @@ $dompdf->setOptions($options);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('letter');
 $dompdf->render();
-$dompdf->stream("CT-CS-EM-".$numero_documento_trabajador."-".$server_date."-".$server_time, array("Attachment" => false));
+$dompdf->stream("CT-CS-AL-".$numero_documento_trabajador."-".$server_date."-".$server_time , array("Attachment" => false));
 
 ?>

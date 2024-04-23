@@ -24,7 +24,7 @@ $firma_operador = $datos_usuario_consultado['firma'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REPORTE TRABAJADORES ACTIVOS</title>
+    <title>REPORTE TRABAJADORES ALTOS FUNCIONARIOS</title>
     <style>
         @page {
             margin: 0cm;
@@ -80,13 +80,7 @@ $firma_operador = $datos_usuario_consultado['firma'];
 </head>
 
 <body>
-<?php
-    $consulta_sql = "SELECT * FROM trabajadores";
-    $resultado = mysqli_query($conn, $consulta_sql);
-    ?>
-    <header>
-    </header>
-    <h1>TRABAJADORES ACTIVOS</h1>
+    <h1>TRABAJADORES ALTOS FUNCIONARIO</h1>
     <table class="table">
         <thead class="thead">
             <tr class="thead__tr">
@@ -106,7 +100,7 @@ $firma_operador = $datos_usuario_consultado['firma'];
                     INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
                     INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
                     INNER JOIN escala_remuneracion ON trabajadores.trabajador_id = escala_remuneracion.escala_remuneracion_id
-                    WHERE categoria = 'ACTIVO' ORDER BY estatus";
+                    WHERE categoria = 'ALTO FUNCIONARIO' ORDER BY estatus";
                     $query = mysqli_query($conn, $query_trabajadores_activos);
                     ?>
 
@@ -140,6 +134,6 @@ $dompdf->setOptions($options);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('folio','landscape');
 $dompdf->render();
-$dompdf->stream("ct-contratado-con-sueldo" , array("Attachment" => false));
+$dompdf->stream("reporte-trabajadores-altos-funcionarios" , array("Attachment" => false));
 
 ?>

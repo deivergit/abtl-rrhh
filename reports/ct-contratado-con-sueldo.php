@@ -6,17 +6,22 @@ ob_start();
 
 # VALIDATION SESSION
 session_start();
+if (isset($_SESSION["usuario_id"])) {
+
+# TIME SERVER
+date_default_timezone_set("America/Caracas");
+$server_time = date("H:i");
+$server_date = date("d:m:y");
 
 # SESSION VARIABLES
-
+$trabajador_id = $_GET["trabajador_id"];
 $usuario_id = $_SESSION["usuario_id"];
 $consulta_sql_usuario = mysqli_query($conn, "SELECT * FROM usuarios WHERE numero_documento = '$usuario_id';");
 $datos_usuario_consultado = mysqli_fetch_array($consulta_sql_usuario);
-$primer_nombre = $datos_usuario_consultado['primer_nombre'];
-$primer_apellido = $datos_usuario_consultado['primer_apellido'];
 $firma_operador = $datos_usuario_consultado['firma'];
-
-$trabajador_id = $_GET["trabajador_id"];
+}   else{
+    die(header("location: ../index.php"));
+}
 
 ?>
 
@@ -26,7 +31,7 @@ $trabajador_id = $_GET["trabajador_id"];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CT CONTRATADO CON SUELDO</title>
+    <title>CT-CS-CO</title>
     <style>
         @page {
             margin: 0cm;
@@ -34,6 +39,7 @@ $trabajador_id = $_GET["trabajador_id"];
 
         * {
             color: rgb(0, 0, 0);
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         a {
@@ -54,13 +60,48 @@ $trabajador_id = $_GET["trabajador_id"];
 
         .main-title {
             display: block;
-            width: 72%;
+            width: 75%;
             height: auto;
             text-align: center;
-            font-size: 2.70em;
-            border-bottom: 3px solid rgb(0, 0, 0);
-            margin: 50px auto 50px auto;
+            font-size: 2.80em;
+            margin: 50px auto 35px auto;
             font-weight: 800;
+        }
+
+        .main-title::before {
+            position: absolute;
+            content: "";
+            height: 5px;
+            width: 75%;
+            background-color: rgb(0, 0, 0);
+            margin-top: 50px;
+        }
+
+        .paragraph {
+            display: block;
+            width: 84%;
+            height: auto;
+            line-height: 29px;
+            font-size: 1.07em;
+            text-align: justify;
+            margin: auto;
+            font-weight: 400;
+        }
+
+        .paragraph--secound-paragraph {
+            margin-top: 18px;
+        }
+
+        .paragraph--third-paragraph {
+            margin: 95px auto 70px auto;
+        }
+
+        .paragraph--fourth-paragraph {
+            line-height: 18px;
+        }
+
+        .paragraph--centered-paragraph {
+            text-align: center;
         }
 
         .footer {
@@ -78,15 +119,7 @@ $trabajador_id = $_GET["trabajador_id"];
             margin-bottom: -50px;
             position: relative;
             z-index: 5;
-        }
-
-
-        p {
-            width: 80%;
-            line-height: 27px;
-            font-size: 1.10em;
-            text-align: justify;
-            margin: auto auto 20px auto;
+            font-size: 0.70em;
         }
 
         .element-box {
@@ -95,7 +128,7 @@ $trabajador_id = $_GET["trabajador_id"];
             height: auto;
             margin: auto;
             text-align: justify;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .control-signature,
@@ -114,9 +147,10 @@ $trabajador_id = $_GET["trabajador_id"];
         }
 
         .message {
-            font-style: italic;
+            width: auto;
             font-weight: 500;
             font-size: 1em;
+            float: right;
         }
 
         .validity-time {
@@ -125,16 +159,12 @@ $trabajador_id = $_GET["trabajador_id"];
             height: auto;
             text-align: right;
             margin: auto;
-            font-size: 1.20em;
+            font-size: 1.10em;
         }
 
-        .paragraph--centered {
-            text-align: center;
-        }
-
-        .paragraph--centered .separate-text {
-            display: block;
-            margin-top: 30px;
+        .footer__number-telephone,
+        .footer__email {
+            font-style: normal;
         }
     </style>
 </head>
@@ -152,11 +182,11 @@ $current_day= date("d");
 
 ?>
 <?php 
-$busqueda_trabajador = "SELECT primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, numero_documento, DAY(fecha_ingreso) AS dia_ingreso, MONTH(fecha_ingreso) AS mes_ingreso, YEAR(fecha_ingreso) AS ano_ingreso, sueldo, cargo, direccion_adscrita, tipo_documento, escala_remuneracion FROM trabajadores 
-INNER JOIN documentos_identidad ON trabajadores.trabajador_id = documentos_identidad.id_documento_identidad
+$busqueda_trabajador = "SELECT primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, numero_documento, DAY(fecha_ingreso) AS dia_ingreso, MONTH(fecha_ingreso) AS mes_ingreso, YEAR(fecha_ingreso) AS ano_ingreso, sueldo_base, cargo, direccion_adscrita, tipo_documento, escala_remuneracion, sexo FROM trabajadores 
+INNER JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.id_documento_identidad
 INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
 INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
-INNER JOIN escala_remuneracion ON trabajadores.trabajador_id = escala_remuneracion.escala_remuneracion_id
+INNER JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion.escala_remuneracion_id
 WHERE numero_documento = '$trabajador_id' AND estatus = 'CONTRATADO'";
 $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
 ?>
@@ -166,12 +196,34 @@ $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
         <img src="http://<?php echo $_SERVER['HTTP_HOST'];?>/views/resources/images/membrete.jpg" alt=""
             class="header__image">
     </header>
-    <h1 class="main-title">CONSTANCIA DE TRABAJO</h1>
-    <p>
-        &nbsp; &nbsp; &nbsp; &nbsp; Por medio de la presente se hace constar que el ciudadano:
+    <h1 class="main-title"><strong>CONSTANCIA DE TRABAJO</strong></h1>
+    <p class="paragraph">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Por medio de la presente se hace constar que <?php $sexo = strval($row["sexo"]);switch ($sexo) {
+            case 'MASCULINO':
+                echo "el";
+                break;
+            case 'FEMENINO':
+                echo "la";
+                break;
+            default:
+                echo "o";
+                break;
+        }  ?> ciudadan<?php $sexo = strval($row["sexo"]);
+        switch ($sexo) {
+            case 'MASCULINO':
+                echo "o";
+                break;
+            case 'FEMENINO':
+                echo "a";
+                break;
+            default:
+                echo "o";
+                break;
+        } ?>:
         <strong><?php echo $row["primer_nombre"]." ".$row["segundo_nombre"]." ".$row["primer_apellido"]." ".$row["segundo_apellido"];?></strong>,
         titular de la Cédula de
-        identidad <strong><?php echo "N° ".$row["tipo_documento"]."-".$row["numero_documento"] ?></strong>, presta sus servicios para esta
+        ídentidad <strong><?php echo "N° ".$row["tipo_documento"]."-".$row["numero_documento"] ?></strong>, presta sus
+        servicios para ésta
         Alcaldía,
         desde el
         día
@@ -216,44 +268,44 @@ $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
                     echo "DICIEMBRE";
                     break;
             } ?></strong> del año <strong><?php echo $row["ano_ingreso"] ?></strong>, actualmente ocupa el cargo de
-        <strong><?php echo $row["cargo"] ?></strong>, (Contratado a Tiempo Determinado), con clasificación <strong><?php echo $row["escala_remuneracion"] ?></strong>, devengando un salario mensual de
+        <strong><?php echo $row["cargo"] ?></strong>, (Contratado a Tiempo Determinado), con clasificación
+        <strong><?php echo $row["escala_remuneracion"] ?></strong>, devengando un salario mensual de
         <?php
-        //Incluímos la clase pago
         $sueldo_letras=strval($row["sueldo"]);
         require_once ("../CifrasEnLetras.php");
         $v=new CifrasEnLetras(200); 
-        //Convertimos el total en letras
         $letra=($v->convertirEurosEnLetras($sueldo_letras));
         ?>
         <strong><?php echo $letra ?></strong>
-        <strong>(Bs <?php echo $row["sueldo"]; ?>).</strong>
+        <strong>(Bs. <?php echo $row["sueldo"]; ?>).</strong>
     </p>
-    <p>&nbsp; &nbsp; &nbsp; &nbsp; Constancia que se expide a petición de la parte interesada a los
+    <p class="paragraph paragraph--secound-paragraph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Constancia que se expide a petición de
+        la parte interesada a los
         <?php echo $days_of_the_month[date('d')-1] ?> (<?php echo $current_day ?>) días del mes de
-        <?php echo $months[date("m")-1] ?> (<?php echo $current_month ?>) del año dos mil veintitrés
+        <?php echo $months[date("m")-1] ?> del año dos mil veintitrés
         (<?php echo $current_year ?>).</p>
-    <p class="paragraph--centered"><span class="separate-text">Atentamente</span><br>
+    <p class="paragraph paragraph--third-paragraph paragraph--centered-paragraph">Atentamente,</p>
+    <p class="paragraph paragraph--fourth-paragraph paragraph--centered-paragraph">
         <strong>Lcda. Aura I. Briceño G.</strong><br>
         Directora de Recursos Humanos<br>
-        Resolución N° 057-2023<br>
+        Resolución N° 057-2023,<br>
         Fecha del 09 de febrero del año 2023<br></p>
-
-
     <footer class="footer">
-        <h2 class="validity-time">Valido por (3) tres meses</h2>
+        <span class="validity-time"><i>Válido por tres (3) meses</i></span>
         <p class="element-box">
-            <span class="control-signature">AIBG/<?php echo $firma_operador; ?></span>
-            <span class="message">¡Ocumare Ciudad de Emprendedores...!</span>
+            <span class="control-signature"><i>AIBG/<?php echo $firma_operador; ?></i></span>
+            <span class="message"><strong>¡Ocumare Ciudad de Emprendedores...!</strong></span>
         </p>
         <address class="footer__address">Av. Miranda cruce con Av. Bolívar, frente el Templo Parroquia San Diego de
-            Alcalá, Casa de Gobierno<br>
-            <a href="tel:+584142437040" class="footer__number-telephone"><strong>Teléfonos
+            Alcalá, Casa de Gobierno.<br>
+            <a href="tel:+584142437040" class="footer__number-telephone"><strong>Teléfono
                     0414-243.70.40</strong></a><br>
             <a href="mailto:rrhhalcaldialander@gmail.com"
                 class="footer__email"><strong>rrhhalcaldialander@gmail.com</strong></a>
         </address>
         <img src="http://<?php echo $_SERVER['HTTP_HOST'];?>/views/resources/images/bandera-de-venezuela.png" alt="">
     </footer>
+    <?php $numero_documento_trabajador = strval($row["numero_documento"]); ?>
 </main>
 <?php }?>
 
@@ -264,7 +316,6 @@ $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
 </html>
 
 <?php
-
 $html = ob_get_clean();
 require '../dompdf/vendor/autoload.php';
 use Dompdf\Dompdf;
@@ -276,6 +327,6 @@ $dompdf->setOptions($options);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('letter');
 $dompdf->render();
-$dompdf->stream("ct-contratado-con-sueldo" , array("Attachment" => false));
+$dompdf->stream("CT-CS-CO-".$numero_documento_trabajador."-".$server_date."-".$server_time, array("Attachment" => false));
 
 ?>

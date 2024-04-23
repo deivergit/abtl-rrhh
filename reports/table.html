@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .table {
+            display: block;
+            width: 50%;
+            height: auto;
+            
+            border-collapse: collapse;
+        }
+
+        .thead__tr, .tbody__tr {
+            border: 1px solid black;
+        }
+
+        .thead {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .thead__tr {
+            display: inline-flex;
+            width: 100%;
+            background: red;
+        }
+
+        .thead__th {
+            display: block;
+            width: 50%;
+            height: auto;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .tbody {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: green;
+        }
+
+        .tbody__tr {
+            width: 100%;
+            display: inline-flex;
+        }
+
+        .tbody__td {
+            display: table-cell; /* Añade esta línea */
+  width: 50%;
+  vertical-align: middle;
+  text-align: center;
+        }
+
+        .tbody__td--small {
+            padding: 0 10px 0 10px;
+            white-space: normal;
+        }
+
+    </style>
+</head>
+
+<body>
+    <table class="table">
+        <thead class="thead">
+            <tr class="thead__tr">
+                <th class="thead__th">CONCEPTO</th>
+                <th class="thead__th">MONTO MENSUAL</th>
+            </tr>
+        </thead>
+        <tbody class="tbody">
+            <tr class="tbody__tr">
+                <td class="tbody__td">Salario Base Mensual</td>
+                <td class="tbody__td">Bs. 130,00</td>
+            </tr>
+            <tr class="tbody__tr">
+                <td class="tbody__td">Prima por Antiguedad</td>
+                <td class="tbody__td">Bs. 39,00</td>
+            </tr>
+            <tr class="tbody__tr">
+                <td class="tbody__td tbody__td--small"><strong>TOTAL SALARIO<br>NORMAL MENSUAL</strong></td>
+                <td class="tbody__td">Bs. 169,00</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

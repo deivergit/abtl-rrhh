@@ -24,7 +24,7 @@ $firma_operador = $datos_usuario_consultado['firma'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REPORTE TRABAJADORES CONTRATADOS</title>
+    <title>REPORTE TRABAJADORES ALTO NIVEL</title>
     <style>
         @page {
             margin: 0cm;
@@ -86,7 +86,7 @@ $firma_operador = $datos_usuario_consultado['firma'];
     ?>
     <header>
     </header>
-    <h1>TRABAJADORES EMPLEADOS ALTO NIVEL</h1>
+    <h1>TRABAJADORES ALTO NIVEL</h1>
     <table class="table">
         <thead class="thead">
             <tr class="thead__tr">
@@ -106,7 +106,7 @@ $firma_operador = $datos_usuario_consultado['firma'];
                     INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
                     INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
                     INNER JOIN escala_remuneracion ON trabajadores.trabajador_id = escala_remuneracion.escala_remuneracion_id
-                    WHERE estatus = 'EMPLEADO ALTO NIVEL' OR estatus = 'EMPLEADO ALTO FUNCIONARIO'";
+                    WHERE estatus = 'ALTO NIVEL' AND categoria ='ACTIVO'";
                     $query = mysqli_query($conn, $query_trabajadores_activos);
                     ?>
 

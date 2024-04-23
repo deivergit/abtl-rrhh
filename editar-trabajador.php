@@ -19,8 +19,8 @@ $primer_apellido = $datos_usuario_consultado['primer_apellido'];
 
 # PAGE TITLE
 $page_title = "TRABAJADORES";
-$item_one = "Dashboard";
-$item_two = "Indicadores";
+$item_one = "Editar trabajador";
+$item_two = "Editar los datos del trabajador";
 $url_icon = "briefcase.svg";
 $boton_1 = "";
 $boton_2 = "boton_active";
@@ -73,11 +73,11 @@ include("./views/components/head.php");
                     <label for="estatus">Estatus</label>
                     <select name="estatus" id="estatus" class="select">
                         <option value="<?php echo $row["estatus"]; ?>" selected><?php echo $row["estatus"]; ?></option>
+                        <option value="ALTO FUNCIONARIO">ALTO FUNCIONARIO</option>
+                        <option value="ALTO NIVEL">ALTO NIVEL</option>
                         <option value="EMPLEADO">EMPLEADO</option>
-                        <option value="EMPLEADO OBRERO">EMPLEADO OBRERO</option>
-                        <option value="EMPLEADO ALTO FUNCIONARIO">EMPLEADO ALTO FUNCIONARIO</option>
-                        <option value="EMPLEADO ALTO NIVEL">EMPLEADO ALTO NIVEL</option>
                         <option value="CONTRATADO">CONTRATADO</option>
+                        <option value="OBRERO">OBRERO</option>
                     </select>
                 </div>
                 <div class="input-box">

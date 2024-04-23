@@ -4,6 +4,7 @@
     height: auto;
     padding: 15px 20px 15px 20px;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .indicator {
@@ -15,6 +16,7 @@
     justify-content: center;
     padding: 15px 15px 15px 15px;
     border-radius: 15px;
+    margin-bottom: 20px;
 }
 
 .indicator__title {

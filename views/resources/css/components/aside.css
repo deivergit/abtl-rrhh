@@ -2,6 +2,7 @@
     display: flex;
     width: 400px;
     min-height: 100vh;
+    height: 100%;
     position: relative;
     flex-direction: column;
     background-color: rgb(34,39,51);
@@ -9,8 +10,12 @@
     z-index: 1;
 }
 
+.hola {
+    background-color: rgb(255, 0, 0);
+}
+
 .boton_active {
-    background: rgb(31, 186, 245);
+    background: rgb(202, 0, 0);
 }
 
 .boton_desactivado {
@@ -160,7 +165,6 @@
     color: rgb(220, 220, 220);
     font-size: 1em;
     text-transform: capitalize;
-    margin: 7px 0 10px 0;
 }
 
 .type_user {
@@ -212,6 +216,8 @@
     align-items: center;
     justify-content: space-between;
 }
+
+
 
 .list {
     width: 100%;
@@ -324,4 +330,61 @@
 
 .navbar__icon--exit {
     margin-right: 15px;
+}
+
+@media (max-width: 950px) {
+
+    .aside {
+        width: 100%;
+        height: auto;
+        min-height: auto;
+        position: fixed;
+        bottom: 0;
+    }
+
+    .user-information {
+        display: none;
+    }
+
+    .user-information__user-photo {
+        display: none;
+    }
+
+    .user-information__circle {
+        display: none;
+    }
+
+    .usernames, .type_user {
+        display: none;
+    }
+
+    .main_nav {
+        display: inline-flex;
+        margin: 0;
+    }
+    
+    .main_nav .list {
+        display: inline-flex;
+        flex-direction: row;
+    }
+
+    .main_nav .nav__link .list__text {
+        display: none;
+    }
+
+    .nav__link {
+        height: 60px;
+    }
+
+    .list__icon {
+        width: 30px;
+        height: auto;
+        margin: auto;
+
+    }
+
+    .button-hidden {
+        display: none;
+    }
+
 }

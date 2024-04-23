@@ -10,22 +10,27 @@ if (isset($_SESSION["usuario_id"])) {
 }
 
 # SESSION VARIABLES
-
 $usuario_id = $_SESSION["usuario_id"];
-$consulta_sql_usuario = mysqli_query($conn, "SELECT * FROM usuarios WHERE numero_documento = '$usuario_id';");
-$datos_usuario_consultado = mysqli_fetch_array($consulta_sql_usuario);
-$primer_nombre = $datos_usuario_consultado['primer_nombre'];
-$primer_apellido = $datos_usuario_consultado['primer_apellido'];
+$consulta_sql_usuario = mysqli_query($conn, "SELECT * FROM usuarios u
+INNER JOIN cargos_usuarios cu ON u.usuario_id = cu.usuario_fk
+INNER JOIN fotos_usuarios fu ON u.usuario_id = fu.usuario_fk WHERE usuario_id = '$usuario_id'");
+$datos_usuario_consultado = mysqli_fetch_assoc($consulta_sql_usuario);
+$primer_nombre_usuario = $datos_usuario_consultado["primer_nombre"];
+$primer_apellido_usuario = $datos_usuario_consultado["primer_apellido"];
+$cargo_usuario = $datos_usuario_consultado["cargo_usuario"];
+$ruta_foto_usuario = $datos_usuario_consultado["ruta_foto_usuario"];
 
 # PAGE TITLE
 $page_title = "TRABAJADORES";
 $item_one = "Dashboard";
 $item_two = "Indicadores";
 $url_icon = "briefcase.svg";
-$boton_1 = "";
-$boton_2 = "boton_active";
-$boton_3 = "";
-$boton_4 = "";
+
+$button_1 = "boton_desactivado";
+$button_2 = "boton_active";
+$button_3 = "boton_desactivado";
+$button_4 = "boton_desactivado";
+$button_5 = "boton_desactivado";
 ?>
 
 <!DOCTYPE html>
@@ -85,11 +90,11 @@ include("./views/components/head.php");
                     <div class="input-box">
                         <label for="estatus">Estatus</label>
                         <select name="estatus" id="estatus">
+                            <option value="ALTO FUNCIONARIO">ALTO FUNCIONARIO</option>
                             <option value="EMPLEADO">EMPLEADO</option>
-                            <option value="EMPLEADO OBRERO">EMPLEADO OBRERO</option>
-                            <option value="EMPLEADO ALTO FUNCIONARIO">EMPLEADO ALTO FUNCIONARIO</option>
-                            <option value="EMPLEADO ALTO NIVEL">EMPLEADO ALTO NIVEL</option>
+                            <option value="ALTO NIVEL">ALTO NIVEL</option>
                             <option value="CONTRATADO">CONTRATADO</option>
+                            <option value="OBRERO">OBRERO</option>
                         </select>
                     </div>
                     <div class="subtitle">
@@ -179,10 +184,10 @@ include("./views/components/head.php");
                             autocomplete="off" placeholder="BUSCAR DIRECCIÓN ADSCRITA">
                         <datalist id="lista_direcciones_adscritas">
                             <?php
-                    $consultaDireccionesAdscritas = "SELECT direccion FROM consulta_direcciones ORDER BY direccion ASC";
+                    $consultaDireccionesAdscritas = "SELECT dependencia FROM consulta_dependencias ORDER BY dependencia ASC";
                     $resultadoConsultaDireccionesAdscritas = mysqli_query($conn, $consultaDireccionesAdscritas);
                     while ($row = mysqli_fetch_array($resultadoConsultaDireccionesAdscritas)) {
-                        $direccion = $row["direccion"];
+                        $direccion = $row["dependencia"];
                     ?>
                             <option value="<?php echo $direccion ?>"><?php echo $direccion ?></option>
                             <?php
@@ -280,8 +285,46 @@ include("./views/components/head.php");
                         </select>
                     </div>
                     <div class="input-box">
-                        <label for="sueldo_trabajador">Sueldo del trabajador</label>
+                        <label for="sueldo_trabajador">Sueldo base</label>
                         <input type="text" id="sueldo_trabajador" name="sueldo" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="sueldo_trabajador">Prima de profesionalización</label>
+                        <select name="" id="">
+                            <option value="20">TÉCNICO SUPERIOR UNIVERSITARIO</option>
+                            <option value="25">PROFESIONAL</option>
+                            <option value="30">ESPECIALISTA</option>
+                            <option value="35">MAESTRÍA</option>
+                            <option value="40">DOCTORADO</option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label for="sueldo_trabajador">Prima de profesionalización</label>
+                        <select name="" id="">
+                            <option value="1">1 AÑO</option>
+                            <option value="2">2 AÑOS</option>
+                            <option value="3">3 AÑOS</option>
+                            <option value="4">4 AÑOS</option>
+                            <option value="5">5 AÑOS</option>
+                            <option value="6.20">6 AÑOS</option>
+                            <option value="7.40">7 AÑOS</option>
+                            <option value="8.60">8 AÑOS</option>
+                            <option value="9.80">9 AÑOS</option>
+                            <option value="11">10 AÑOS</option>
+                            <option value="12.40">11 AÑOS</option>
+                            <option value="13.80">12 AÑOS</option>
+                            <option value="15.20">13 AÑOS</option>
+                            <option value="16.60">14 AÑOS</option>
+                            <option value="18">15 AÑOS</option>
+                            <option value="19.60">16 AÑOS</option>
+                            <option value="21.20">17 AÑOS</option>
+                            <option value="22.80">18 AÑOS</option>
+                            <option value="24.40">19 AÑOS</option>
+                            <option value="26">20 AÑOS</option>
+                            <option value="27.80">21 AÑOS</option>
+                            <option value="29.60">22 AÑOS</option>
+                            <option value="30">23 AÑOS</option>
+                        </select>
                     </div>
                     <div class="box-button">
                         <button class="button button--save" id="confirmBtn" type="submit"><img
@@ -297,8 +340,8 @@ include("./views/components/head.php");
                     <tr class="thead__tr">
                         <th class="thead__th">Categoria</th>
                         <th class="thead__th">Estatus</th>
-                        <th class="thead__th">Primer nombre</th>
-                        <th class="thead__th">Primer apellido</th>
+                        <th class="thead__th">Nombres</th>
+                        <th class="thead__th">Apellidos</th>
                         <th class="thead__th">Cedula</th>
                         <th class="thead__th">Acciones</th>
                     </tr>
@@ -346,12 +389,14 @@ include("./views/components/head.php");
                     </tr>
                     <?php } ?>
                     <?php } ?>
-                    <?php } ?>
+                    <?php } else 
+                    echo '<h1>No se puede</h1>';
+                    ?>
                 </tbody>
             </table>
         </div>
     </div>
 </body>
-<script src="../views/resources/js/main.js"></script>
+<script src="./views/resources/js/main.js"></script>
 
 </html>

@@ -101,15 +101,14 @@ $firma_operador = $datos_usuario_consultado['firma'];
         </thead>
         <tbody class="tbody">
             <?php 
-                    $query_trabajadores_activos = "SELECT * FROM trabajadores 
-                    INNER JOIN documentos_identidad ON trabajadores.trabajador_id = documentos_identidad.id_documento_identidad
-                    INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
-                    INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
-                    INNER JOIN escala_remuneracion ON trabajadores.trabajador_id = escala_remuneracion.escala_remuneracion_id
-                    WHERE estatus = 'CONTRATADO'";
-                    $query = mysqli_query($conn, $query_trabajadores_activos);
-                    ?>
-
+                $query_trabajadores_activos = "SELECT * FROM trabajadores 
+                INNER JOIN documentos_identidad ON trabajadores.trabajador_id = documentos_identidad.id_documento_identidad
+                INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
+                INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
+                INNER JOIN escala_remuneracion ON trabajadores.trabajador_id = escala_remuneracion.escala_remuneracion_id
+                WHERE estatus = 'CONTRATADO'";
+                $query = mysqli_query($conn, $query_trabajadores_activos);
+            ?>
             <?php while ($row = mysqli_fetch_array($query)) { ?>
             <tr class="tbody__tr">
                 <td class="tbody__td"><?php echo $row["categoria"]; ?></td>

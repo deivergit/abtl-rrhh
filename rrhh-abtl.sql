@@ -5,17 +5,152 @@ USE rrhh_abtl;
 CREATE TABLE IF NOT EXISTS usuarios(
 PRIMARY KEY(usuario_id),
 usuario_id INT UNSIGNED AUTO_INCREMENT,
-primer_nombre VARCHAR(45) NOT NULL,
-primer_apellido VARCHAR(45) NOT NULL,
-numero_documento BIGINT NOT NULL,
-contraseña VARCHAR(32) NOT NULL,
-cargo VARCHAR(45) NOT NULL,
-firma VARCHAR(2) NOT NULL
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+primer_nombre VARCHAR(20) NOT NULL,
+segundo_nombre VARCHAR(20) NOT NULL,
+primer_apellido VARCHAR(20) NOT NULL,
+segundo_apellido VARCHAR(20) NOT NULL,
+numero_documento BIGINT NOT NULL UNIQUE,
+contraseña VARCHAR(32) NOT NULL
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
 
-INSERT INTO usuarios(usuario_id, primer_nombre, primer_apellido, numero_documento, contraseña, cargo, firma)
-VALUES (1,'DEIVER','MARTINEZ','22798946','202cb962ac59075b964b07152d234b70','ANALISTA DE PROGRAMACION','dm'),
-(2,'AURA','BRICEÑO','12300838','202cb962ac59075b964b07152d234b70','DIRECTORA','ab');
+CREATE INDEX numero_documento_idx ON usuarios(numero_documento);
+
+CREATE TABLE IF NOT EXISTS cargos_usuarios(
+PRIMARY KEY(cargo_usuario_id),
+cargo_usuario_id INT UNSIGNED AUTO_INCREMENT,
+cargo_usuario VARCHAR(70) NOT NULL,
+usuario_fk INT UNSIGNED,
+FOREIGN KEY (usuario_fk) REFERENCES usuarios(usuario_id) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
+
+CREATE INDEX cargo_usuario_idx ON cargos_usuarios(cargo_usuario);
+
+CREATE TABLE IF NOT EXISTS fotos_usuarios(
+PRIMARY KEY(foto_usuario_id),
+foto_usuario_id INT UNSIGNED AUTO_INCREMENT,
+nombre_foto_usuario VARCHAR(70) NOT NULL DEFAULT 'avatar.webp',
+ruta_foto_usuario TEXT NOT NULL DEFAULT '/views/profile_images/avatar.webp',
+usuario_fk INT UNSIGNED,
+FOREIGN KEY (usuario_fk) REFERENCES usuarios(usuario_id) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARSET=ascii AUTO_INCREMENT=1;
+
+CREATE INDEX foto_usuario_idx ON fotos_usuarios(nombre_foto_usuario);
+
+CREATE TABLE IF NOT EXISTS firmas_usuarios(
+PRIMARY KEY(firma_usuario_id),
+firma_usuario_id INT UNSIGNED AUTO_INCREMENT,
+firma_usuario VARCHAR(4) NOT NULL,
+usuario_fk INT UNSIGNED,
+FOREIGN KEY (usuario_fk) REFERENCES usuarios(usuario_id) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
+
+CREATE INDEX firma_usuario_idx ON firmas_usuarios(firma_usuario);
+
+CREATE TABLE IF NOT EXISTS estatus_usuarios(
+PRIMARY KEY(estatus_usuario_id),
+estatus_usuario_id INT UNSIGNED AUTO_INCREMENT,
+estatus_usuario ENUM('ACTIVO','INACTIVO') NOT NULL DEFAULT 'INACTIVO',
+usuario_fk INT UNSIGNED,
+FOREIGN KEY (usuario_fk) REFERENCES usuarios(usuario_id) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;
+
+CREATE INDEX estatus_usuario_idx ON estatus_usuarios(estatus_usuario);
+
+# REGISTROS TABLA USUARIOS
+
+INSERT INTO usuarios(usuario_id, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, numero_documento, contraseña)
+VALUES (1,'DEIVER','ALEXANDER','MARTINEZ','ROSALES','22798946','68c5b415b5d6dadd0c6a04f796fefba4'),
+(2,'AURA','ISBER','BRICEÑO','GONZALEZ','12300838','25f9e794323b453885f5181f1b624d0b'),
+(3,'KEIDDER','YAMILETH','MARTINEZ','','14163214','bfb38ed83010e210ac9deb66163c08fe'),
+(4, 'MARIOXI','ANDREA','GONZALEZ','CASTILLO','18841964','1f1aa391b97cbeca5f15e50c9edda8f4'),
+(5, 'MEIZON','ULISES','GUARDIA','PEREZ','28185234','34348d1736500113aab7ab30df5bc9f3'),
+(6, 'YUDERXY','DEL VALLE','FIGUERA','GUZMAN','19829392','bdb8a5ad39f7c33ebec5769d0fc0a743'),
+(7, 'ALSUHAIL','STEPHANY','SEIJAS','MENDOZA','25227967', 'ae840492ffc8b984d3ae8f425ec0040c'),
+(8, 'THAELY','SABRINA','GALLARDO','MORENO','16812115','8f800a6825a5622424987b013681de79'),
+(9, 'ROSMERY','ALEXANDRA','DELGADO','CELIS','26427230','baddc9a7b887d973e6498aa9f377e922'),
+(10, 'ANDERSON','NAHUM','SEQUERA','RIVERO','29615206','8d975b3cf0f0bf01c61f82b8cf2fbbcb'),
+(11, 'MARIANGELA','NAZARETH','DIAZ','PEREIRA','29801466','b65bc76c61845cd35da5df50ab931f62');
+
+INSERT INTO cargos_usuarios(cargo_usuario_id, usuario_fk, cargo_usuario)
+VALUES(1,1,'ANALISTA DE PROGRAMACIÓN'),
+(2,2,'DIRECTORA'),
+(3,3,'SECRETARIO I'),
+(4,4,'ANALISTA DE RECURSOS HUMANOS I'),
+(5,5,'SECRETARIO'),
+(6,6,'ANALISTA DE RECURSOS HUMANOS'),
+(7,7,'SECRETARIA'),
+(8,8,'ANALISTA DE RECURSOS HUMANOS II'),
+(9,9,'AUXILIAR DE ANALISTA INTEGRAL'),
+(10,10,'AUXILIAR DE RECURSOS HUMANOS I'),
+(11,11,'AUXILIAR SECRETARIAL');
+
+INSERT INTO fotos_usuarios(foto_usuario_id, usuario_fk, nombre_foto_usuario, ruta_foto_usuario)
+VALUES('1','1','22798946.webp','/views/resources/uploads/profiles_images/1/22798946.webp'),
+('2','2','avatar.webp','/views/resources/uploads/profiles_images/default/avatar.webp'),
+('3','3','avatar.webp','/views/resources/uploads/profiles_images/default/avatar.webp'),
+('4','4','avatar.webp','/views/resources/uploads/profiles_images/default/avatar.webp'),
+('5','5','avatar.webp','/views/resources/uploads/profiles_images/default/avatar.webp'),
+('6','6','avatar.webp','/views/resources/uploads/profiles_images/default/avatar.webp'),
+('7','7','avatar.webp','/views/resources/uploads/profiles_images/default/avatar.webp'),
+('8','8','avatar.webp','/views/resources/uploads/profiles_images/default/avatar.webp'),
+('9','9','avatar.webp','/views/resources/uploads/profiles_images/default/avatar.webp'),
+('10','10','avatar.webp','/views/resources/uploads/profiles_images/default/avatar.webp'),
+('11','11','avatar.webp','/views/resources/uploads/profiles_images/default/avatar.webp');
+
+INSERT INTO firmas_usuarios(firma_usuario_id, usuario_fk, firma_usuario)
+VALUES('1','1','damr'),
+('2','2','aibg'),
+('3','3','kym'),
+('4','4','magc'),
+('5','5','mugp'),
+('6','6','ydfg'),
+('7','7','assm'),
+('8','8','tsgm'),
+('9','9','radc'),
+('10','10','ansr'),
+('11','11','mndp');
+
+INSERT INTO estatus_usuarios(estatus_usuario_id, usuario_fk, estatus_usuario)
+VALUES('1','1','ACTIVO'),
+('2','2','ACTIVO'),
+('3','3','ACTIVO'),
+('4','4','ACTIVO'),
+('5','5','ACTIVO'),
+('6','6','ACTIVO'),
+('7','7','ACTIVO'),
+('8','8','ACTIVO'),
+('9','9','ACTIVO'),
+('10','10','ACTIVO'),
+('11','11','ACTIVO');
+
+# CONSULTAS E INSERSIONES TABLA USUARIOS Y SUS DEPENDENCIAS
+
+SELECT primer_nombre, primer_apellido, ruta_foto_usuario, cargo_usuario FROM usuarios u
+INNER JOIN cargos_usuarios cu ON u.usuario_id = cu.usuario_fk
+INNER JOIN fotos_usuarios fu ON u.usuario_id = fu.usuario_fk
+where usuario_id = 1;
+
+SELECT numero_documento, contraseña, estatus_usuario FROM usuarios u
+INNER JOIN estatus_usuarios eu ON u.usuario_id = eu.estatus_usuario_id 
+WHERE numero_documento = 22798946 AND contraseña = "68c5b415b5d6dadd0c6a04f796fefba4" AND estatus_usuario = "ACTIVO";
+
+SELECT primer_nombre, primer_apellido, cargo_usuario, ruta_foto_usuario FROM usuarios u
+INNER JOIN cargos_usuarios cu ON u.usuario_id = cu.cargo_usuario_id 
+INNER JOIN fotos_usuarios fu ON u.usuario_id = fu.foto_usuario_id
+WHERE usuario_id=1;
+
+UPDATE usuarios u
+INNER JOIN cargos_usuarios cu ON u.usuario_id = cu.usuario_fk
+INNER JOIN fotos_usuarios fu ON u.usuario_id = fu.usuario_fk
+INNER JOIN firmas_usuarios fiu ON u.usuario_id = fiu.usuario_fk
+INNER JOIN estatus_usuarios eu ON u.usuario_id = eu.usuario_fk
+SET u.primer_nombre = 'DEIVER', u.segundo_nombre = 'ALEXANDER', u.primer_apellido = 'MARTINEZ', 
+u.segundo_apellido = 'ROSALES', u.numero_documento = '22798946', u.contraseña = '68c5b415b5d6dadd0c6a04f796fefba4', 
+cu.cargo_usuario = 'ANALISTA DE PROGRAMACIÓN', fu.foto_usuario = '22798946.webp', eu.estatus_usuario = 'ACTIVO', 
+eu.estatus_usuario = 'ACTIVO'
+WHERE usuario_id = 1;
+
+# TABLAS DE LOS TRABAJADORES
 
 CREATE TABLE IF NOT EXISTS trabajadores(
 PRIMARY KEY (trabajador_id),
@@ -23,65 +158,97 @@ trabajador_id INT UNSIGNED AUTO_INCREMENT,
 fecha_ingreso DATE,
 fecha_egreso DATE NULL,
 categoria ENUM('ACTIVO','EGRESADO','JUBILADO','INCAPACITADO','COMISION DE SERVICIO') NOT NULL,
-estatus ENUM('EMPLEADO','EMPLEADO OBRERO','EMPLEADO ALTO FUNCIONARIO','EMPLEADO ALTO NIVEL','CONTRATADO') NOT NULL
+estatus ENUM('EMPLEADO','OBRERO','ALTO FUNCIONARIO','ALTO NIVEL','CONTRATADO') NOT NULL
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS documentos_identidad(
+CREATE TABLE IF NOT EXISTS documentos_identidad_trabajadores(
 PRIMARY KEY (id_documento_identidad),
 id_documento_identidad INT UNSIGNED AUTO_INCREMENT,
-primer_nombre VARCHAR(20) NULL,
-segundo_nombre VARCHAR(20),
-primer_apellido VARCHAR(20) NULL,
-segundo_apellido VARCHAR(20),
-tipo_documento ENUM('V','E') NULL,
-numero_documento varchar(50) UNIQUE NOT NULL,
-estado_civil ENUM('SOLTERO','SOLTERA','CASADO','CASADA','DIVORCIADO','DIVORCIADA','VIUDO','VIUDA'),
+primer_nombre VARCHAR(20) NOT NULL,
+segundo_nombre VARCHAR(20) NULL,
+primer_apellido VARCHAR(20) NOT NULL,
+segundo_apellido VARCHAR(20) NULL,
+tipo_documento ENUM('V','E') NOT NULL,
+numero_documento CHAR(8) UNIQUE NOT NULL,
+estado_civil ENUM('SOLTERO','SOLTERA','CASADO','CASADA','DIVORCIADO','DIVORCIADA','VIUDO','VIUDA') NOT NULL,
 fecha_nacimiento DATE NOT NULL,
 pais_nacimiento VARCHAR(30) NOT NULL,
-sexo ENUM('MASCULINO','FEMENINO'),
+sexo ENUM('MASCULINO','FEMENINO') NOT NULL,
 trabajador_fk INT UNSIGNED,
 FOREIGN KEY (trabajador_fk) REFERENCES trabajadores(trabajador_id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS cargos_ejercidos(
-PRIMARY KEY(cargo_ejercido_id),
-cargo_ejercido_id INT UNSIGNED AUTO_INCREMENT,
-fecha_inicio DATE NOT NULL,
-fecha_fin DATE NULL,
-direccion_adscrita VARCHAR(80) NOT NULL,
-cargo VARCHAR(80) NOT NULL,
+CREATE INDEX documentos_identidad_trabajadores_idx ON documentos_identidad_trabajadores(numero_documento);
+
+CREATE TABLE IF NOT EXISTS cargos_trabajadores(
+PRIMARY KEY(cargo_trabajador_id),
+cargo_trabajador_id INT UNSIGNED AUTO_INCREMENT,
+dependencia TEXT NOT NULL,
+cargo_trabajador TEXT NOT NULL,
+fecha_inicio_cargo DATE NOT NULL,
+fecha_fin_cargo DATE NULL,
 trabajador_fk INT UNSIGNED,
 FOREIGN KEY (trabajador_fk) REFERENCES trabajadores(trabajador_id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE IF NOT EXISTS escala_remuneracion(
+CREAte INDEX cargos_trabajadores_idx ON cargos_trabajadores(cargo_trabajador);
+
+CREATE TABLE IF NOT EXISTS escala_remuneracion_trabajadores(
 PRIMARY KEY (escala_remuneracion_id),
 escala_remuneracion_id INT UNSIGNED AUTO_INCREMENT,
-escala_remuneracion VARCHAR(10),
+escala_remuneracion VARCHAR(5),
 trabajador_fk INT UNSIGNED,
 FOREIGN KEY (trabajador_fk) REFERENCES trabajadores(trabajador_id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS sueldos_trabajadores(
-PRIMARY KEY (sueldos_trabajadores_id),
-sueldos_trabajadores_id INT UNSIGNED AUTO_INCREMENT,
-sueldo VARCHAR(6),
+PRIMARY KEY (sueldo_trabajador_id),
+sueldo_trabajador_id INT UNSIGNED AUTO_INCREMENT,
+sueldo_base DECIMAL(5,2) UNSIGNED,
+prima_hijo DECIMAL(5,2) UNSIGNED,
+prima_profesionalizacion INT(2) UNSIGNED,
+prima_antiguedad DECIMAL(4,2) UNSIGNED,
+sueldo_total_mensual DECIMAL(5,2) UNSIGNED,
 trabajador_fk INT UNSIGNED,
 FOREIGN KEY (trabajador_fk) REFERENCES trabajadores(trabajador_id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+CREATE TABLE IF NOT EXISTS cargos_ejercidos(
+PRIMARY KEY (cargo_ejercido_id),
+cargo_ejercido_id INT UNSIGNED AUTO_INCREMENT,
+direccion_adscrita TEXT,
+cargo TEXT,
+fecha_inicio DATE,
+fecha_fin DATE,
+trabajador_fk INT UNSIGNED,
+FOREIGN KEY (trabajador_fk) REFERENCES trabajadores(trabajador_id) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+insert into sueldos_trabajadores(sueldo_trabajador_id,sueldo_base,prima_hijo,prima_profesionalizacion,prima_antiguedad) 
+VALUES(1,246.00,0.00,25,1.00),
+	  (2,192.00,25.00,20,3.00);
+
+SELECT FORMAT(sueldo_total_mensual, 2,'es_ES') as sueldo_total_mensual from sueldos_trabajadores;
+
+SELECT * from sueldos_trabajadores;
+
+update sueldos_trabajadores set sueldo_total_mensual = sueldo_base + prima_profesionalizacion / 100 * sueldo_base + prima_antiguedad / 100 * sueldo_base +
+prima_hijo where sueldo_trabajador_id > 0;
+
 # TABLAS DE CONSULTA
 
-CREATE TABLE IF NOT EXISTS consulta_direcciones(
-primary key(id_consulta_direccion),
-id_consulta_direccion INT UNSIGNED AUTO_INCREMENT,
-direccion TEXT UNIQUE
+CREATE TABLE IF NOT EXISTS consulta_dependencias(
+primary key(consulta_dependencia_id),
+consulta_dependencia_id INT UNSIGNED AUTO_INCREMENT,
+dependencia VARCHAR(100) UNIQUE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO consulta_direcciones(id_consulta_direccion, direccion) VALUES 
+CREATE INDEX dependencia_idx ON consulta_dependencias(dependencia);
+
+INSERT INTO consulta_dependencias(consulta_dependencia_id, dependencia) VALUES 
 (1, 'DIRECCIÓN DE SISTEMAS Y TECNOLOGÍA DE LA INFORMACIÓN'),
 (2, 'DIRECCIÓN DE PRENSA'),
-(3, 'DIRECCIÓN DE PROTOCOLO Y EVENTOS'),
 (4, 'DIRECCIÓN DE RECURSOS HUMANOS'),
 (5, 'DIRECCIÓN DE REGISTRO CIVIL'),
 (6, 'DIRECCIÓN DE SERVICIOS GENERALES'),
@@ -103,10 +270,9 @@ INSERT INTO consulta_direcciones(id_consulta_direccion, direccion) VALUES
 (66, 'OFICINA DE TESORERÍA MUNICIPAL'),
 (68, 'SECRETARIA COORDINADORA DE ASUNTOS SOCIALES Y GRANDES MISIONES'),
 (69, 'DIRECCIÓN DE ATENCIÓN AL SOBERANO'),
-(70, 'DIRECCIÓN DE SALUD');
+(70, 'DIRECCIÓN DE SALUD'),
+(72, 'OFICINA GENERAL DE GOBIERNO');
 
-SELECT * FROM consulta_direcciones ORDER BY direccion ASC;
-drop table consulta_cargos;
 CREATE TABLE IF NOT EXISTS consulta_cargos(
 PRIMARY KEY(id_consulta_cargo),
 id_consulta_cargo INT UNSIGNED AUTO_INCREMENT,
@@ -168,12 +334,12 @@ INSERT INTO consulta_cargos(id_consulta_cargo, cargo) VALUES
 (53, 'OBRERA'),
 (54, 'ELECTRICISTA');
 
-CREATE TABLE `paises` (
-`id` int(11) NOT NULL AUTO_INCREMENT,
-`iso` char(2) DEFAULT NULL,
-`nombre` varchar(80) DEFAULT NULL,
+CREATE TABLE paises (
+id int(11) NOT NULL AUTO_INCREMENT,
+iso char(2) DEFAULT NULL,
+nombre VARCHAR(80) NOT NULL,
 PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
  
 INSERT INTO `paises` (`id`, `nombre`) VALUES
 (1, 'Australia'),
@@ -420,3 +586,4 @@ LEFT JOIN cargos_ejercidos ce ON t.trabajador_id = ce.cargo_ejercido_id
 LEFT JOIN escala_remuneracion er ON t.trabajador_id = er.escala_remuneracion_id
 LEFT JOIN sueldos_trabajadores st ON t.trabajador_id = st.sueldos_trabajadores_id
 WHERE t.trabajador_id = 1;
+

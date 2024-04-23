@@ -13,6 +13,7 @@
     height: auto;
     background-color: rgb(255, 255, 255);
     flex-direction: column;
+    margin-bottom: 20px;
 }
 
 .formulario-ct input {

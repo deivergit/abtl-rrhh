@@ -24,7 +24,7 @@ $firma_operador = $datos_usuario_consultado['firma'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REPORTE TRABAJADORES ACTIVOS</title>
+    <title>REPORTE TRABAJADORES EMPLEADOS</title>
     <style>
         @page {
             margin: 0cm;
@@ -74,7 +74,7 @@ $firma_operador = $datos_usuario_consultado['firma'];
             background: rgb(235, 235, 235);
         }
 
-
+        
         
     </style>
 </head>
@@ -86,7 +86,7 @@ $firma_operador = $datos_usuario_consultado['firma'];
     ?>
     <header>
     </header>
-    <h1>TRABAJADORES ACTIVOS</h1>
+    <h1>TRABAJADORES OBREROS</h1>
     <table class="table">
         <thead class="thead">
             <tr class="thead__tr">
@@ -106,13 +106,13 @@ $firma_operador = $datos_usuario_consultado['firma'];
                     INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
                     INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
                     INNER JOIN escala_remuneracion ON trabajadores.trabajador_id = escala_remuneracion.escala_remuneracion_id
-                    WHERE categoria = 'ACTIVO' ORDER BY estatus";
+                    WHERE estatus = 'OBRERO' AND categoria = 'ACTIVO'";
                     $query = mysqli_query($conn, $query_trabajadores_activos);
                     ?>
 
             <?php while ($row = mysqli_fetch_array($query)) { ?>
             <tr class="tbody__tr">
-                <td class="tbody__td"><?php echo $row["estatus"]; ?></td>
+                <td class="tbody__td"><?php echo $row["categoria"]; ?></td>
                 <td class="tbody__td"><?php echo $row["fecha_ingreso"]; ?></td>
                 <td class="tbody__td"><?php echo $row["primer_nombre"]."   ".$row["segundo_nombre"]; ?></td>
                 <td class="tbody__td"><?php echo $row["primer_apellido"]."   ".$row["segundo_apellido"]; ?></td>
@@ -140,6 +140,6 @@ $dompdf->setOptions($options);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('folio','landscape');
 $dompdf->render();
-$dompdf->stream("ct-contratado-con-sueldo" , array("Attachment" => false));
+$dompdf->stream("reporte-trabajadores-obreros" , array("Attachment" => false));
 
 ?>

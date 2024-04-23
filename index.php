@@ -29,6 +29,7 @@
             <p>Desarrollado por la Dirección de Sistemas y Tecnologías de la Información
                 <br>Versión 1.0</p>
         </footer>
+        
     </main>
 </body>
 
