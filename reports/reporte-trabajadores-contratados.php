@@ -6,8 +6,8 @@ ob_start();
 
 session_start();
 if (isset($_SESSION["usuario_id"])) {
-}   else {
-        die(header("Location:./index.php"));
+} else {
+    die(header("Location:./index.php"));
 }
 
 # SESSION VARIABLES
@@ -33,7 +33,7 @@ $ruta_foto_usuario = $datos_usuario_consultado["ruta_foto_usuario"];
     <style>
         @page {
             margin: 0cm;
-            
+
         }
 
         * {
@@ -63,7 +63,7 @@ $ruta_foto_usuario = $datos_usuario_consultado["ruta_foto_usuario"];
 
         thead tr {
             height: auto;
-            
+
         }
 
         tbody tr td {
@@ -78,14 +78,11 @@ $ruta_foto_usuario = $datos_usuario_consultado["ruta_foto_usuario"];
         tbody tr:nth-child(2n) {
             background: rgb(235, 235, 235);
         }
-
-        
-        
     </style>
 </head>
 
 <body>
-<?php
+    <?php
     $consulta_sql = "SELECT * FROM trabajadores";
     $resultado = mysqli_query($conn, $consulta_sql);
     ?>
@@ -105,25 +102,25 @@ $ruta_foto_usuario = $datos_usuario_consultado["ruta_foto_usuario"];
             </tr>
         </thead>
         <tbody class="tbody">
-            <?php 
-                $query_trabajadores_activos = "SELECT * FROM trabajadores 
-                INNER JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.id_documento_identidad
-                INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldo_trabajador_id
-                INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
-                INNER JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion_trabajadores.escala_remuneracion_id
+            <?php
+            $query_trabajadores_activos = "SELECT * FROM trabajadores 
+                INNER JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.trabajador_fk
+                INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.trabajador_fk
+                INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.trabajador_fk
+                INNER JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion_trabajadores.trabajador_fk
                 WHERE estatus = 'CONTRATADO'";
-                $query = mysqli_query($conn, $query_trabajadores_activos);
+            $query = mysqli_query($conn, $query_trabajadores_activos);
             ?>
             <?php while ($row = mysqli_fetch_array($query)) { ?>
-            <tr class="tbody__tr">
-                <td class="tbody__td"><?php echo $row["categoria"]; ?></td>
-                <td class="tbody__td"><?php echo $row["fecha_ingreso"]; ?></td>
-                <td class="tbody__td"><?php echo $row["primer_nombre"]."   ".$row["segundo_nombre"]; ?></td>
-                <td class="tbody__td"><?php echo $row["primer_apellido"]."   ".$row["segundo_apellido"]; ?></td>
-                <td class="tbody__td"><?php echo $row["tipo_documento"]."-".$row["numero_documento"]; ?></td>
-                <td class="tbody__td"><?php echo $row["direccion_adscrita"]; ?></td>
-                <td class="tbody__td"><?php echo $row["sueldo_base"]; ?></td>
-            </tr>
+                <tr class="tbody__tr">
+                    <td class="tbody__td"><?php echo $row["categoria"]; ?></td>
+                    <td class="tbody__td"><?php echo $row["fecha_ingreso"]; ?></td>
+                    <td class="tbody__td"><?php echo $row["primer_nombre"] . "   " . $row["segundo_nombre"]; ?></td>
+                    <td class="tbody__td"><?php echo $row["primer_apellido"] . "   " . $row["segundo_apellido"]; ?></td>
+                    <td class="tbody__td"><?php echo $row["tipo_documento"] . "-" . $row["numero_documento"]; ?></td>
+                    <td class="tbody__td"><?php echo $row["direccion_adscrita"]; ?></td>
+                    <td class="tbody__td"><?php echo $row["sueldo_base"]; ?></td>
+                </tr>
             <?php } ?>
         </tbody>
     </table>
@@ -135,15 +132,17 @@ $ruta_foto_usuario = $datos_usuario_consultado["ruta_foto_usuario"];
 
 $html = ob_get_clean();
 require '../dompdf/vendor/autoload.php';
+
 use Dompdf\Dompdf;
+
 $dompdf = new Dompdf();
 $options = $dompdf->getOptions();
 $options->set(array('isRemoteEnabled' => true));
 $dompdf->setOptions($options);
 
 $dompdf->loadHtml($html);
-$dompdf->setPaper('folio','landscape');
+$dompdf->setPaper('folio', 'landscape');
 $dompdf->render();
-$dompdf->stream("ct-contratado-con-sueldo" , array("Attachment" => false));
+$dompdf->stream("ct-contratado-con-sueldo", array("Attachment" => false));
 
 ?>

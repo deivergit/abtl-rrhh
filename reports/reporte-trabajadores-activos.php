@@ -107,10 +107,10 @@ $ruta_foto_usuario = $datos_usuario_consultado["ruta_foto_usuario"];
         <tbody class="tbody">
             <?php 
                     $query_trabajadores_activos = "SELECT * FROM trabajadores 
-                    LEFT JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.id_documento_identidad
-                    LEFT JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldo_trabajador_id
-                    LEFT JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
-                    LEFT JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion_trabajadores.escala_remuneracion_id
+                    LEFT JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.trabajador_fk
+                    LEFT JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.trabajador_fk
+                    LEFT JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.trabajador_fk
+                    LEFT JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion_trabajadores.trabajador_fk
                     WHERE categoria = 'ACTIVO' ORDER BY estatus";
                     $query = mysqli_query($conn, $query_trabajadores_activos);
                     ?>

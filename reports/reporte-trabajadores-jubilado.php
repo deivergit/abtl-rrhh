@@ -82,10 +82,6 @@ $ruta_foto_usuario = $datos_usuario_consultado["ruta_foto_usuario"];
 </head>
 
 <body>
-    <?php
-    $consulta_sql = "SELECT * FROM trabajadores";
-    $resultado = mysqli_query($conn, $consulta_sql);
-    ?>
     <header>
     </header>
     <h1>TRABAJADORES JUBILADOS</h1>
@@ -104,10 +100,10 @@ $ruta_foto_usuario = $datos_usuario_consultado["ruta_foto_usuario"];
         <tbody class="tbody">
             <?php
             $query_trabajadores_activos = "SELECT * FROM trabajadores 
-                    INNER JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.id_documento_identidad
-                    INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldo_trabajador_id
-                    INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
-                    INNER JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion_trabajadores.escala_remuneracion_id
+                    INNER JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.trabajador_fk
+                    INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.trabajador_fk
+                    INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.trabajador_fk
+                    INNER JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion_trabajadores.trabajador_fk
                     WHERE categoria = 'JUBILADO' ORDER BY estatus";
             $query = mysqli_query($conn, $query_trabajadores_activos);
             ?>

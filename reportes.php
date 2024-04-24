@@ -49,7 +49,7 @@ $result_trabajadores_empleados = mysqli_fetch_assoc($query_trabajadores_empleado
 $query_trabajadores_jubilados = mysqli_query($conn, "SELECT COUNT(*) trabajadores_jubilados FROM trabajadores WHERE categoria = 'JUBILADO'");
 $result_trabajadores_jubilados = mysqli_fetch_assoc($query_trabajadores_jubilados);
 
-$query_trabajadores_altos_funcionarios = mysqli_query($conn, "SELECT COUNT(*) trabajadores_altos_funcionarios FROM trabajadores WHERE categoria = 'ALTO FUNCIONARIO' AND categoria = 'ACTIVO'");
+$query_trabajadores_altos_funcionarios = mysqli_query($conn, "SELECT COUNT(*) trabajadores_altos_funcionarios FROM trabajadores WHERE estatus = 'ALTO FUNCIONARIO' AND categoria = 'ACTIVO'");
 $result_trabajadores_altos_funcionarios = mysqli_fetch_assoc($query_trabajadores_altos_funcionarios);
 
 $query_trabajadores_obreros = mysqli_query($conn, "SELECT COUNT(*) trabajadores_obreros FROM trabajadores WHERE estatus = 'OBRERO' AND categoria = 'ACTIVO'");
