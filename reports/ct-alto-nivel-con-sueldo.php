@@ -183,7 +183,7 @@ $current_day= date("d");
 ?>
 <?php 
 $busqueda_trabajador = "SELECT primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, numero_documento, DAY(fecha_ingreso) AS dia_ingreso, MONTH(fecha_ingreso) AS mes_ingreso, YEAR(fecha_ingreso) AS ano_ingreso, sueldo, cargo, direccion_adscrita, tipo_documento, sexo FROM trabajadores 
-INNER JOIN documentos_identidad ON trabajadores.trabajador_id = documentos_identidad.id_documento_identidad
+INNER JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.id_documento_identidad
 INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
 INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
 WHERE numero_documento = '$trabajador_id' AND estatus='ALTO NIVEL'";
@@ -281,7 +281,7 @@ $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
         <?php
         //Incluímos la clase pago
         $totalpagar=strval($row["sueldo"]);
-        require_once ("../CifrasEnLetras.php");
+        require_once ("../cifrasenletras.php");
         $v=new CifrasEnLetras(200); 
         //Convertimos el total en letras
         $letra=($v->convertirEurosEnLetras($totalpagar));

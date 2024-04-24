@@ -5,8 +5,8 @@ require_once("./config/database.php");
 # VALIDATION SESSION
 session_start();
 if (isset($_SESSION["usuario_id"])) {
-}   else {
-        die(header("Location:./index.php"));
+} else {
+    die(header("Location:./index.php"));
 }
 
 # SESSION VARIABLES
@@ -44,12 +44,12 @@ include("./views/components/head.php");
 <body>
     <div class="main-container">
         <?php
-    require_once("./views/components/aside.php");
-    ?>
+        require_once("./views/components/aside.php");
+        ?>
         <div class="container">
             <?php
-                include("./views/components/header.php");
-                include("./views/components/bar-leyend.php");
+            include("./views/components/header.php");
+            include("./views/components/bar-leyend.php");
             ?>
             <div class="controller">
                 <form method="GET" class="search-form">
@@ -59,8 +59,7 @@ include("./views/components/head.php");
             </div>
 
             <div class="controller">
-                <button id="abrirModal" class="button-add" title="Agregar nuevo trabajador"><img
-                        src="./views/resources/icons/plus.svg" alt=""></button>
+                <button id="abrirModal" class="button-add" title="Agregar nuevo trabajador"><img src="./views/resources/icons/plus.svg" alt=""></button>
             </div>
             <!-- MAIN MODAL -->
             <dialog class="modal" id="ventanaModal">
@@ -103,23 +102,19 @@ include("./views/components/head.php");
                     </div>
                     <div class="input-box">
                         <label for="primer_nombre">Primer nombre</label>
-                        <input type="text" id="primer_nombre" name="primer_nombre" placeholder="INGRESE PRIMER NOMBRE"
-                            autocomplete="off" required>
+                        <input type="text" id="primer_nombre" name="primer_nombre" placeholder="INGRESE PRIMER NOMBRE" autocomplete="off" required>
                     </div>
                     <div class="input-box">
                         <label for="segundo_nombre">Segundo nombre</label>
-                        <input type="text" id="segundo_nombre" name="segundo_nombre"
-                            placeholder="INGRESE SEGUNDO NOMBRE" autocomplete="off">
+                        <input type="text" id="segundo_nombre" name="segundo_nombre" placeholder="INGRESE SEGUNDO NOMBRE" autocomplete="off">
                     </div>
                     <div class="input-box">
                         <label for="primer_apellido">Primer apellido</label>
-                        <input type="text" id="primer_apellido" name="primer_apellido"
-                            placeholder="INGRESE PRIMER APELLIDO" autocomplete="off" required>
+                        <input type="text" id="primer_apellido" name="primer_apellido" placeholder="INGRESE PRIMER APELLIDO" autocomplete="off" required>
                     </div>
                     <div class="input-box">
                         <label for="segundo_apellido">Segundo apellido</label>
-                        <input type="text" id="segundo_apellido" name="segundo_apellido"
-                            placeholder="INGRESE SEGUNDO APELLIDO" autocomplete="off">
+                        <input type="text" id="segundo_apellido" name="segundo_apellido" placeholder="INGRESE SEGUNDO APELLIDO" autocomplete="off">
                     </div>
                     <div class="input-box">
                         <label for="tipo_documento">Tipo de documento</label>
@@ -130,24 +125,22 @@ include("./views/components/head.php");
                     </div>
                     <div class="input-box">
                         <label for="numero_documento">Número de documento</label>
-                        <input type="text" id="numero_documento" name="numero_documento"
-                            placeholder="INGRESE NÚMERO DE DOCUMENTO" autocomplete="off" required>
+                        <input type="text" id="numero_documento" name="numero_documento" placeholder="INGRESE NÚMERO DE DOCUMENTO" autocomplete="off" required>
                     </div>
                     <div class="input-box">
                         <label for="pais_de_nacimiento">País de nacimiento</label>
-                        <input type="text" id="pais_de_nacimiento" list="lista_de_paises" name="pais_nacimiento"
-                            placeholder="INGRESE PAÍS DE NACIMIENTO">
+                        <input type="text" id="pais_de_nacimiento" list="lista_de_paises" name="pais_nacimiento" placeholder="INGRESE PAÍS DE NACIMIENTO">
                         <datalist id="lista_de_paises">
                             <?php
-                    $query_paises = "SELECT UPPER(nombre) as nombre FROM paises";
-                    $result_paises = mysqli_query($conn, $query_paises);
-                    while ($row = mysqli_fetch_array($result_paises)) {
-                    $pais = $row["nombre"];
-                    ?>
-                            <option value="<?php echo $pais ?>"><?php echo $pais ?></option>
+                            $query_paises = "SELECT UPPER(nombre) as nombre FROM paises";
+                            $result_paises = mysqli_query($conn, $query_paises);
+                            while ($row = mysqli_fetch_array($result_paises)) {
+                                $pais = $row["nombre"];
+                            ?>
+                                <option value="<?php echo $pais ?>"><?php echo $pais ?></option>
                             <?php
-                    }
-                    ?>
+                            }
+                            ?>
                         </datalist>
                     </div>
                     <div class="input-box">
@@ -180,19 +173,18 @@ include("./views/components/head.php");
                     </div>
                     <div class="input-box">
                         <label for="direccion_adscrita">Direccion adscrita</label>
-                        <input type="text" list="lista_direcciones_adscritas" name="direccion_adscrita" id="direccion_adscrita"
-                            autocomplete="off" placeholder="BUSCAR DIRECCIÓN ADSCRITA">
+                        <input type="text" list="lista_direcciones_adscritas" name="direccion_adscrita" id="direccion_adscrita" autocomplete="off" placeholder="BUSCAR DIRECCIÓN ADSCRITA">
                         <datalist id="lista_direcciones_adscritas">
                             <?php
-                    $consultaDireccionesAdscritas = "SELECT dependencia FROM consulta_dependencias ORDER BY dependencia ASC";
-                    $resultadoConsultaDireccionesAdscritas = mysqli_query($conn, $consultaDireccionesAdscritas);
-                    while ($row = mysqli_fetch_array($resultadoConsultaDireccionesAdscritas)) {
-                        $direccion = $row["dependencia"];
-                    ?>
-                            <option value="<?php echo $direccion ?>"><?php echo $direccion ?></option>
+                            $consultaDireccionesAdscritas = "SELECT dependencia FROM consulta_dependencias ORDER BY dependencia ASC";
+                            $resultadoConsultaDireccionesAdscritas = mysqli_query($conn, $consultaDireccionesAdscritas);
+                            while ($row = mysqli_fetch_array($resultadoConsultaDireccionesAdscritas)) {
+                                $direccion = $row["dependencia"];
+                            ?>
+                                <option value="<?php echo $direccion ?>"><?php echo $direccion ?></option>
                             <?php
-                        }
-                    ?>
+                            }
+                            ?>
                         </datalist>
                     </div>
                     <div class="input-box">
@@ -200,15 +192,15 @@ include("./views/components/head.php");
                         <input type="text" id="cargo" list="lista_cargos" placeholder="BUSCAR CARGO" name="cargo">
                         <datalist id="lista_cargos">
                             <?php
-                    $query_cargo = "SELECT cargo FROM consulta_cargos ORDER BY cargo ASC";
-                    $result_cargo = mysqli_query($conn, $query_cargo);
-                    while ($row = mysqli_fetch_array($result_cargo)) {
-                    $cargo = $row["cargo"];
-                ?>
-                            <option value="<?php echo $cargo ?>"><?php echo $cargo ?></option>
+                            $query_cargo = "SELECT cargo FROM consulta_cargos ORDER BY cargo ASC";
+                            $result_cargo = mysqli_query($conn, $query_cargo);
+                            while ($row = mysqli_fetch_array($result_cargo)) {
+                                $cargo = $row["cargo"];
+                            ?>
+                                <option value="<?php echo $cargo ?>"><?php echo $cargo ?></option>
                             <?php
-                }
-                ?>
+                            }
+                            ?>
                         </datalist>
                     </div>
                     <div class="input-box">
@@ -327,10 +319,8 @@ include("./views/components/head.php");
                         </select>
                     </div>
                     <div class="box-button">
-                        <button class="button button--save" id="confirmBtn" type="submit" name="registrar_trabajador"><img
-                                src="./views/resources/icons/save.svg" alt="icono"></button>
-                        <button class="button button--reset" type="reset"><img
-                                src="./views/resources/icons/x.svg" alt="icono"></button>
+                        <button class="button button--save" id="confirmBtn" type="submit" name="registrar_trabajador"><img src="./views/resources/icons/save.svg" alt="icono"></button>
+                        <button class="button button--reset" type="reset"><img src="./views/resources/icons/x.svg" alt="icono"></button>
                     </div>
                 </form>
             </dialog>
@@ -348,47 +338,43 @@ include("./views/components/head.php");
                 </thead>
                 <tbody class="tbody">
                     <?php
-                                if(isset($_GET["numero_documento"]) && $_GET["numero_documento"] != ''){
-                                    require_once("./config/database.php");
-                                    if ($conn->connect_error) {
-                                        die("Error de conexion: " . $conn->connect_error);
-                                    }
-                                    $numero_documento = $_GET["numero_documento"];
-                                    $busqueda = mysqli_query($conn, "SELECT * FROM trabajadores 
-                                    LEFT JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.id_documento_identidad
-                                    LEFT JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldo_trabajador_id
-                                    LEFT JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
-                                    LEFT JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion_trabajadores.escala_remuneracion_id
+                    if (isset($_GET["numero_documento"]) && $_GET["numero_documento"] != '') {
+                        require_once("./config/database.php");
+                        if ($conn->connect_error) {
+                            die("Error de conexion: " . $conn->connect_error);
+                        }
+                        $numero_documento = $_GET["numero_documento"];
+                        $busqueda = mysqli_query($conn, "SELECT *
+                                    FROM trabajadores 
+                                    LEFT JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.trabajador_fk
+                                    LEFT JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.trabajador_fk
+                                    LEFT JOIN cargos_trabajadores ON trabajadores.trabajador_id = cargos_trabajadores.trabajador_fk
+                                    LEFT JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion_trabajadores.trabajador_fk
                                     WHERE numero_documento = '$numero_documento'");
-                                    if ($busqueda->num_rows == 0) {
-                                        echo 
-                                        "<tr>
+                        if ($busqueda->num_rows == 0) {
+                            echo
+                            "<tr>
                                             <td colspan='6' class='not-found'>No hay resultados</td>
                                         </tr>";
-                                    } else {
-                                        while ($row = mysqli_fetch_assoc($busqueda)) { ?>
-                    <tr class="tbody__tr">
-                        <input type="hidden" value="<?php echo $row["trabajador_id"];  ?>">
-                        <td class="tbody__td <?php echo $row["categoria"];  ?>" data-label="ID">
-                            <?php echo $row["categoria"];  ?></td>
-                        <td class="tbody__td" data-label="ID"><?php echo $row["estatus"];  ?></td>
-                        <td class="tbody__td" data-label="NOMBRES">
-                            <?php echo $row["primer_nombre"]."   ".$row["segundo_nombre"];  ?></td>
-                        <td class="tbody__td" data-label="APELLIDOS">
-                            <?php echo $row["primer_apellido"]."   ".$row["segundo_apellido"];  ?></td>
-                        <td class="tbody__td" data-label="CEDULA"><?php echo $row["numero_documento"];  ?></td>
-                        <td class="tbody__td">
-                            <a
-                                href="./controllers/eliminar-trabajador-controller.php?trabajador_id=<?php echo $row["trabajador_id"];?>"><img
-                                    src="./views/resources/icons/trash.svg" alt="icono" title="Eliminar trabajador"
-                                    class="icon-action eliminar_trabajador"></a>
-                            <a href="./editar-trabajador.php?trabajador_id=<?php echo $row["trabajador_id"];?>"><img
-                                    src="./views/resources/icons/edit.svg" alt="icono" title="Editar trabajador"
-                                    class="icon-action eliminar_trabajador"></a>
-                        </td>
-                    </tr>
-                    <?php } ?>
-                    <?php } ?>
+                        } else {
+                            while ($row = mysqli_fetch_assoc($busqueda)) { ?>
+                                <tr class="tbody__tr">
+                                    <input type="hidden" value="<?php echo $row["trabajador_id"];  ?>">
+                                    <td class="tbody__td <?php echo $row["categoria"];  ?>" data-label="ID">
+                                        <?php echo $row["categoria"];  ?></td>
+                                    <td class="tbody__td" data-label="ID"><?php echo $row["estatus"];  ?></td>
+                                    <td class="tbody__td" data-label="NOMBRES">
+                                        <?php echo $row["primer_nombre"] . "   " . $row["segundo_nombre"];  ?></td>
+                                    <td class="tbody__td" data-label="APELLIDOS">
+                                        <?php echo $row["primer_apellido"] . "   " . $row["segundo_apellido"];  ?></td>
+                                    <td class="tbody__td" data-label="CEDULA"><?php echo $row["numero_documento"];  ?></td>
+                                    <td class="tbody__td">
+                                        <a href="./controllers/eliminar-trabajador-controller.php?trabajador_id=<?php echo $row["trabajador_id"]; ?>"><img src="./views/resources/icons/trash.svg" alt="icono" title="Eliminar trabajador" class="icon-action eliminar_trabajador"></a>
+                                        <a href="./editar-trabajador.php?trabajador_id=<?php echo $row["trabajador_id"]; ?>"><img src="./views/resources/icons/edit.svg" alt="icono" title="Editar trabajador" class="icon-action eliminar_trabajador"></a>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        <?php } ?>
                     <?php } ?>
                 </tbody>
             </table>
