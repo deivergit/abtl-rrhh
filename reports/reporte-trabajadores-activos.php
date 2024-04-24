@@ -4,17 +4,22 @@ require_once("../config/database.php");
 
 ob_start();
 
-# VALIDATION SESSION
 session_start();
+if (isset($_SESSION["usuario_id"])) {
+}   else {
+        die(header("Location:./index.php"));
+}
 
 # SESSION VARIABLES
-
 $usuario_id = $_SESSION["usuario_id"];
-$consulta_sql_usuario = mysqli_query($conn, "SELECT * FROM usuarios WHERE numero_documento = '$usuario_id';");
-$datos_usuario_consultado = mysqli_fetch_array($consulta_sql_usuario);
-$primer_nombre = $datos_usuario_consultado['primer_nombre'];
-$primer_apellido = $datos_usuario_consultado['primer_apellido'];
-$firma_operador = $datos_usuario_consultado['firma'];
+$consulta_sql_usuario = mysqli_query($conn, "SELECT * FROM usuarios u
+INNER JOIN cargos_usuarios cu ON u.usuario_id = cu.usuario_fk
+INNER JOIN fotos_usuarios fu ON u.usuario_id = fu.usuario_fk WHERE usuario_id = '$usuario_id'");
+$datos_usuario_consultado = mysqli_fetch_assoc($consulta_sql_usuario);
+$primer_nombre_usuario = $datos_usuario_consultado["primer_nombre"];
+$primer_apellido_usuario = $datos_usuario_consultado["primer_apellido"];
+$cargo_usuario = $datos_usuario_consultado["cargo_usuario"];
+$ruta_foto_usuario = $datos_usuario_consultado["ruta_foto_usuario"];
 
 ?>
 
@@ -102,10 +107,10 @@ $firma_operador = $datos_usuario_consultado['firma'];
         <tbody class="tbody">
             <?php 
                     $query_trabajadores_activos = "SELECT * FROM trabajadores 
-                    INNER JOIN documentos_identidad ON trabajadores.trabajador_id = documentos_identidad.id_documento_identidad
-                    INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
-                    INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
-                    INNER JOIN escala_remuneracion ON trabajadores.trabajador_id = escala_remuneracion.escala_remuneracion_id
+                    LEFT JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.id_documento_identidad
+                    LEFT JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldo_trabajador_id
+                    LEFT JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
+                    LEFT JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion_trabajadores.escala_remuneracion_id
                     WHERE categoria = 'ACTIVO' ORDER BY estatus";
                     $query = mysqli_query($conn, $query_trabajadores_activos);
                     ?>
@@ -118,7 +123,7 @@ $firma_operador = $datos_usuario_consultado['firma'];
                 <td class="tbody__td"><?php echo $row["primer_apellido"]."   ".$row["segundo_apellido"]; ?></td>
                 <td class="tbody__td"><?php echo $row["tipo_documento"]."-".$row["numero_documento"]; ?></td>
                 <td class="tbody__td"><?php echo $row["direccion_adscrita"]; ?></td>
-                <td class="tbody__td"><?php echo $row["sueldo"]; ?></td>
+                <td class="tbody__td"><?php echo $row["sueldo_base"]; ?></td>
             </tr>
             <?php } ?>
         </tbody>
