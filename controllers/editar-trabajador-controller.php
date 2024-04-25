@@ -35,10 +35,10 @@ $escala_remuneracion = strtoupper($_POST["escala_remuneracion"]);
 $sueldo = $_POST["sueldo"];
 
 $update = "UPDATE trabajadores t 
-LEFT JOIN documentos_identidad_trabajadores di ON t.trabajador_id = di.id_documento_identidad
-LEFT JOIN cargos_ejercidos ce ON t.trabajador_id = ce.cargo_ejercido_id
-LEFT JOIN escala_remuneracion_trabajadores er ON t.trabajador_id = er.escala_remuneracion_id
-LEFT JOIN sueldos_trabajadores st ON t.trabajador_id = st.sueldo_trabajador_id 
+LEFT JOIN documentos_identidad_trabajadores di ON t.trabajador_id = di.trabajador_fk
+LEFT JOIN cargos_ejercidos ce ON t.trabajador_id = ce.trabajador_fk
+LEFT JOIN escala_remuneracion_trabajadores er ON t.trabajador_id = er.trabajador_fk
+LEFT JOIN sueldos_trabajadores st ON t.trabajador_id = st.trabajador_fk
 SET t.fecha_ingreso = '$fecha_ingreso', t.fecha_egreso = '$fecha_egreso', t.categoria = '$categoria', t.estatus = '$estatus',
 di.primer_nombre = '$primer_nombre', di.segundo_nombre = '$segundo_nombre', di.primer_apellido = '$primer_apellido', di.segundo_apellido = '$segundo_apellido', di.tipo_documento = '$tipo_documento', di.numero_documento = '$numero_documento',
 di.estado_civil = '$estado_civil', di.fecha_nacimiento = '$fecha_nacimiento', di.pais_nacimiento = '$pais_nacimiento', di.sexo = '$sexo',
