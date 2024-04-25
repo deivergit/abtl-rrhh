@@ -5,17 +5,20 @@ require_once("./config/database.php");
 # VALIDATION SESSION
 session_start();
 if (isset($_SESSION["usuario_id"])) {
-}   else {
-        die(header("Location:./index.php"));
+} else {
+    die(header("Location:./index.php"));
 }
 
 # SESSION VARIABLES
-
 $usuario_id = $_SESSION["usuario_id"];
-$consulta_sql_usuario = mysqli_query($conn, "SELECT * FROM usuarios WHERE numero_documento = '$usuario_id';");
-$datos_usuario_consultado = mysqli_fetch_array($consulta_sql_usuario);
-$primer_nombre = $datos_usuario_consultado['primer_nombre'];
-$primer_apellido = $datos_usuario_consultado['primer_apellido'];
+$consulta_sql_usuario = mysqli_query($conn, "SELECT * FROM usuarios u
+INNER JOIN cargos_usuarios cu ON u.usuario_id = cu.usuario_fk
+INNER JOIN fotos_usuarios fu ON u.usuario_id = fu.usuario_fk WHERE usuario_id = '$usuario_id'");
+$datos_usuario_consultado = mysqli_fetch_assoc($consulta_sql_usuario);
+$primer_nombre_usuario = $datos_usuario_consultado["primer_nombre"];
+$primer_apellido_usuario = $datos_usuario_consultado["primer_apellido"];
+$cargo_usuario = $datos_usuario_consultado["cargo_usuario"];
+$ruta_foto_usuario = $datos_usuario_consultado["ruta_foto_usuario"];
 
 # PAGE TITLE
 $page_title = "TRABAJADORES";
@@ -47,10 +50,10 @@ include("./views/components/head.php");
                 include("./views/components/bar-leyend.php");
                 $trabajador_id = $_GET["trabajador_id"];
                 $editar_trabajador = "SELECT * FROM trabajadores 
-                INNER JOIN documentos_identidad ON trabajadores.trabajador_id = documentos_identidad.id_documento_identidad
-                INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
-                INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
-                INNER JOIN escala_remuneracion ON trabajadores.trabajador_id = escala_remuneracion.escala_remuneracion_id
+                LEFT JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.trabajador_fk
+                LEFT JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.trabajador_fk
+                LEFT JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.trabajador_fk
+                LEFT JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion_trabajadores.trabajador_fk
                 WHERE trabajador_id = '$trabajador_id'";
                 $result_editar_trabajador = mysqli_query($conn, $editar_trabajador);
             ?>
@@ -214,7 +217,7 @@ include("./views/components/head.php");
                 </div>
                 <div class="input-box">
                     <label for="">Sueldo del trabajador</label>
-                    <input type="text" name="sueldo" value="<?php echo $row['sueldo']; ?>">
+                    <input type="text" name="sueldo" value="<?php echo $row['sueldo_base']; ?>">
                 </div>
                 <div class="input-box">
                     <label for="">fecha de inicio</label>
@@ -247,10 +250,10 @@ include("./views/components/head.php");
                         <option value="<?php echo $row["direccion_adscrita"]; ?>" selected>
                             <?php echo $row["direccion_adscrita"]; ?></option>
                         <?php
-                    $consultaDireccionesAdscritas = "SELECT direccion FROM consulta_direcciones ORDER BY direccion ASC";
+                    $consultaDireccionesAdscritas = "SELECT dependencia FROM consulta_dependencias ORDER BY dependencia ASC";
                     $resultadoConsultaDireccionesAdscritas = mysqli_query($conn, $consultaDireccionesAdscritas);
                     while ($row = mysqli_fetch_array($resultadoConsultaDireccionesAdscritas)) {
-                        $direccion = $row["direccion"];
+                        $direccion = $row["dependencia"];
                     ?>
                         <option value="<?php echo $direccion ?>"><?php echo $direccion ?></option>
                         <?php
