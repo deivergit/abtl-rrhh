@@ -4,19 +4,28 @@ require_once("../config/database.php");
 
 ob_start();
 
-# VALIDATION SESSION
-session_start();
+# TIME SERVER
+date_default_timezone_set("America/Caracas");
+$server_time = date("H:i");
+$server_date = date("d:m:y");
 
 # SESSION VARIABLES
-
-$usuario_id = $_SESSION["usuario_id"];
-$consulta_sql_usuario = mysqli_query($conn, "SELECT * FROM usuarios WHERE numero_documento = '$usuario_id';");
-$datos_usuario_consultado = mysqli_fetch_array($consulta_sql_usuario);
-$primer_nombre = $datos_usuario_consultado['primer_nombre'];
-$primer_apellido = $datos_usuario_consultado['primer_apellido'];
-$firma_operador = $datos_usuario_consultado['firma'];
+session_start();
+if (isset($_SESSION["usuario_id"])) {
+}   else {
+        die(header("Location:./index.php"));
+}
 
 $trabajador_id = $_GET["trabajador_id"];
+
+# SESSION VARIABLES
+$usuario_id = $_SESSION["usuario_id"];
+
+$consulta_sql_usuario = mysqli_query($conn, "SELECT firma_usuario FROM usuarios u
+LEFT JOIN firmas_usuarios fu ON u.usuario_id = fu.usuario_fk
+WHERE usuario_id = '$usuario_id'");
+$datos_usuario_consultado = mysqli_fetch_assoc($consulta_sql_usuario);
+$firma_operador = $datos_usuario_consultado["firma_usuario"];
 
 ?>
 
@@ -26,7 +35,7 @@ $trabajador_id = $_GET["trabajador_id"];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Constancia de trabajo</title>
+    <title>CT-CS-JU</title>
     <style>
         @page {
             margin: 0cm;
@@ -165,10 +174,10 @@ $current_day= date("d");
 
 ?>
 <?php 
-$busqueda_trabajador = "SELECT primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, numero_documento, DAY(fecha_ingreso) AS dia_ingreso, MONTH(fecha_ingreso) AS mes_ingreso, YEAR(fecha_ingreso) AS ano_ingreso, DAY(fecha_egreso) AS dia_egreso, MONTH(fecha_egreso) AS mes_egreso, YEAR(fecha_egreso) AS ano_egreso, sueldo, cargo, direccion_adscrita, tipo_documento, sexo FROM trabajadores 
-INNER JOIN documentos_identidad ON trabajadores.trabajador_id = documentos_identidad.id_documento_identidad
-INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
-INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
+$busqueda_trabajador = "SELECT primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, numero_documento, DAY(fecha_ingreso) AS dia_ingreso, MONTH(fecha_ingreso) AS mes_ingreso, YEAR(fecha_ingreso) AS ano_ingreso, DAY(fecha_egreso) AS dia_egreso, MONTH(fecha_egreso) AS mes_egreso, YEAR(fecha_egreso) AS ano_egreso, FORMAT(sueldo_base, 2, 'de_DE') AS sueldo_base, cargo, direccion_adscrita, tipo_documento, sexo FROM trabajadores 
+INNER JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.trabajador_fk
+INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.trabajador_fk
+INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.trabajador_fk
 WHERE numero_documento = '$trabajador_id' AND categoria='JUBILADO'";
 $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
 ?>
@@ -285,11 +294,7 @@ $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
 
 
     <footer class="footer">
-        <h2 class="validity-time">Valido por (3) tres meses</h2>
-        <p class="element-box">
-            <span class="control-signature">AIBG/<?php echo $firma_operador; ?></span>
-            <span class="message">¡Ocumare Ciudad de Emprendedores...!</span>
-        </p>
+        
         <address class="footer__address">Av. Miranda cruce con Av. Bolívar, frente el Templo Parroquia San Diego de
             Alcalá, Casa de Gobierno<br>
             <a href="tel:+584142437040" class="footer__number-telephone"><strong>Teléfono

@@ -60,7 +60,7 @@ require("./views/components/head.php");
                     <input type="text" name="trabajador_id">
                     <button type="submit">Generar constancia</button>
                 </form>
-                <form action="./reports/ct-empleado-con-sueldo.php" method="get" target="_blank" class="formulario-ct">
+                <form action="./reports/ct-empleado-con-sueldo.php" method="GET" target="_blank" class="formulario-ct">
                     <p>EMPLEADO</p>
                     <input type="text" name="trabajador_id">
                     <button type="submit">Generar constancia</button>

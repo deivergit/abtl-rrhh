@@ -4,26 +4,31 @@ require_once("../config/database.php");
 
 ob_start();
 
-# VALIDATION SESSION
-session_start();
-if (isset($_SESSION["usuario_id"])) {
-
 # TIME SERVER
 date_default_timezone_set("America/Caracas");
 $server_time = date("H:i");
 $server_date = date("d:m:y");
 
 # SESSION VARIABLES
-$trabajador_id = $_GET["trabajador_id"];
-$usuario_id = $_SESSION["usuario_id"];
-$consulta_sql_usuario = mysqli_query($conn, "SELECT * FROM usuarios WHERE numero_documento = '$usuario_id';");
-$datos_usuario_consultado = mysqli_fetch_array($consulta_sql_usuario);
-$firma_operador = $datos_usuario_consultado['firma'];
-}   else{
-    die(header("location: ../index.php"));
+session_start();
+if (isset($_SESSION["usuario_id"])) {
+}   else {
+        die(header("Location:./index.php"));
 }
 
+$trabajador_id = $_GET["trabajador_id"];
+
+# SESSION VARIABLES
+$usuario_id = $_SESSION["usuario_id"];
+
+$consulta_sql_usuario = mysqli_query($conn, "SELECT firma_usuario FROM usuarios u
+LEFT JOIN firmas_usuarios fu ON u.usuario_id = fu.usuario_fk
+WHERE usuario_id = '$usuario_id'");
+$datos_usuario_consultado = mysqli_fetch_assoc($consulta_sql_usuario);
+$firma_operador = $datos_usuario_consultado["firma_usuario"];
+
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -181,10 +186,10 @@ $current_day= date("d");
 
 ?>
 <?php 
-$busqueda_trabajador = "SELECT primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, numero_documento, DAY(fecha_ingreso) AS dia_ingreso, MONTH(fecha_ingreso) AS mes_ingreso, YEAR(fecha_ingreso) AS ano_ingreso, sueldo, cargo, direccion_adscrita, tipo_documento, sexo FROM trabajadores 
-INNER JOIN documentos_identidad ON trabajadores.trabajador_id = documentos_identidad.id_documento_identidad
-INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
-INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
+$busqueda_trabajador = "SELECT primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, numero_documento, DAY(fecha_ingreso) AS dia_ingreso, MONTH(fecha_ingreso) AS mes_ingreso, YEAR(fecha_ingreso) AS ano_ingreso, FORMAT(sueldo_base, 2, 'de_DE') AS sueldo_base, cargo, direccion_adscrita, tipo_documento, sexo FROM trabajadores 
+INNER JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.trabajador_fk
+INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.trabajador_fk
+INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.trabajador_fk
 WHERE numero_documento = '$trabajador_id' AND estatus='EMPLEADO'";
 $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
 ?>
@@ -279,36 +284,34 @@ $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
             <?php echo $row["direccion_adscrita"]; ?></strong>, devengando un salario mensual de
         <?php
         //Incluímos la clase pago
-        $totalpagar=strval($row["sueldo"]);
-        require_once ("../CifrasEnLetras.php");
+        $totalpagar=strval($row["sueldo_base"]);
+        require_once ("../cifrasenletras.php");
         $v=new CifrasEnLetras(200); 
         //Convertimos el total en letras
         $letra=($v->convertirEurosEnLetras($totalpagar));
         ?>
         <strong><?php echo $letra ?></strong>
-        <strong>(Bs <?php echo $row["sueldo"]; ?>).</strong>
+        <strong>(Bs <?php echo $row["sueldo_base"]; ?>).</strong>
     </p>
-    <p class="paragraph paragraph--secound-paragraph">&nbsp; &nbsp; &nbsp; &nbsp; Constancia que se expide a petición de
-        la parte interesada a los
+    <p class="paragraph paragraph--secound-paragraph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Constancia que se expide a petición de la parte interesada a los
         <?php echo $days_of_the_month[date('d')-1] ?> (<?php echo $current_day ?>) días del mes de
         <?php echo $months[date("m")-1] ?> del año dos mil veintitrés
         (<?php echo $current_year ?>).</p>
-    <p class="paragraph paragraph--third-paragraph paragraph--centered-paragraph">Atentamente,</P>
-    <p class="paragraph paragraph--fourth-paragraph paragraph--centered-paragraph"><strong>Lcda. Aura I. Briceño
-            G.</strong><br>
+    <p class="paragraph paragraph--third-paragraph paragraph--centered-paragraph">Atentamente,</p>
+        <p class="paragraph paragraph--fourth-paragraph paragraph--centered-paragraph"><strong>Lcda. Aura I. Briceño G.</strong><br>
         Directora de Recursos Humanos<br>
         Resolución N° 057-2023,<br>
-        Fecha del 09 de febrero del año 2023<br>
-    </p>
+        Fecha del 09 de febrero del año 2023<br></p>
+
 
     <footer class="footer">
-        <span class="validity-time"><i>Válido por tres (3) meses</i></span>
+    <span class="validity-time"><i>Válido por tres (3) meses</i></span>
         <p class="element-box">
             <span class="control-signature"><i>AIBG/<?php echo $firma_operador; ?></i></span>
             <span class="message"><strong>¡Ocumare Ciudad de Emprendedores...!</strong></span>
         </p>
         <address class="footer__address">Av. Miranda cruce con Av. Bolívar, frente el Templo Parroquia San Diego de
-            Alcalá, Casa de Gobierno.<br>
+            Alcalá, Casa de Gobierno<br>
             <a href="tel:+584142437040" class="footer__number-telephone"><strong>Teléfono
                     0414-243.70.40</strong></a><br>
             <a href="mailto:rrhhalcaldialander@gmail.com"
@@ -339,6 +342,6 @@ $dompdf->setOptions($options);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('letter');
 $dompdf->render();
-$dompdf->stream("CT-CS-EM-".$numero_documento_trabajador."-".$server_date."-".$server_time, array("Attachment" => false));
+$dompdf->stream("CT-CS-AL-".$numero_documento_trabajador."-".$server_date."-".$server_time , array("Attachment" => false));
 
 ?>
