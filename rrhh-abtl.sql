@@ -559,11 +559,11 @@ INSERT INTO `paises` (`id`, `nombre`) VALUES
 
 # CONSULTAS
 
-SELECT primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, tipo_documento, numero_documento, DAY(fecha_ingreso) AS dia_ingreso, MONTH(fecha_ingreso) AS mes_ingreso, YEAR(fecha_ingreso) AS ano_ingreso, cargo, direccion_adscrita, escala_remuneracion, sueldo FROM trabajadores 
-INNER JOIN documentos_identidad ON trabajadores.trabajador_id = documentos_identidad.id_documento_identidad
-INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldos_trabajadores_id
+SELECT primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, tipo_documento, numero_documento, DAY(fecha_ingreso) AS dia_ingreso, MONTH(fecha_ingreso) AS mes_ingreso, YEAR(fecha_ingreso) AS ano_ingreso, cargo, direccion_adscrita, escala_remuneracion, sueldo_base FROM trabajadores 
+INNER JOIN documentos_identidad_trabajadores ON trabajadores.trabajador_id = documentos_identidad_trabajadores.id_documento_identidad
+INNER JOIN sueldos_trabajadores ON trabajadores.trabajador_id = sueldos_trabajadores.sueldo_trabajador_id
 INNER JOIN cargos_ejercidos ON trabajadores.trabajador_id = cargos_ejercidos.cargo_ejercido_id
-INNER JOIN escala_remuneracion ON trabajadores.trabajador_id = escala_remuneracion.escala_remuneracion_id
+INNER JOIN escala_remuneracion_trabajadores ON trabajadores.trabajador_id = escala_remuneracion_trabajadores.escala_remuneracion_id
 WHERE numero_documento = 22798946;
 
 

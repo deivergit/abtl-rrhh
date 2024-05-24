@@ -39,6 +39,22 @@ $button_5 = "boton_desactivado";
 <?php
 include("./views/components/head.php");
 ?>
+<style>
+    .button--save {
+        padding: 8px 30px 8px 30px;
+        margin-right: 20px;
+        background-color: rgb(12, 169, 144);
+        border: none;
+        color: rgb(255, 255, 255);
+    }
+
+    .button--reset {
+        padding: 8px 30px 8px 30px;
+        background-color: rgb(202, 0, 0);
+        color: rgb(255, 255, 255);
+        border: none;
+    }
+</style>
 </head>
 
 <body>
