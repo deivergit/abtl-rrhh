@@ -286,7 +286,7 @@ $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
         <?php
         //Incluímos la clase pago
         $totalpagar=strval($row["sueldo_base"]);
-        require_once ("../cifrasenletras.php");
+        include("../cifrasenletras.php");
         $v=new CifrasEnLetras(200); 
         //Convertimos el total en letras
         $letra=($v->convertirEurosEnLetras($totalpagar));

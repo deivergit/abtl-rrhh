@@ -194,122 +194,84 @@ WHERE numero_documento = '$trabajador_id' AND estatus = 'CONTRATADO'";
 $result_trabajador_constancia = mysqli_query($conn, $busqueda_trabajador);
 ?>
 <?php while ($row = mysqli_fetch_assoc($result_trabajador_constancia)) { ?>
-    <main>
-        <header class="header">
-            <img src="http://<?php echo $_SERVER['HTTP_HOST']; ?>/views/resources/images/membrete.jpg" alt="" class="header__image">
-        </header>
-        <h1 class="main-title"><strong>CONSTANCIA DE TRABAJO</strong></h1>
-        <p class="paragraph">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Por medio de la presente se hace constar que <?php $sexo = strval($row["sexo"]);
-                                                                                                            switch ($sexo) {
-                                                                                                                case 'MASCULINO':
-                                                                                                                    echo "el";
-                                                                                                                    break;
-                                                                                                                case 'FEMENINO':
-                                                                                                                    echo "la";
-                                                                                                                    break;
-                                                                                                                default:
-                                                                                                                    echo "o";
-                                                                                                                    break;
-                                                                                                            }  ?> ciudadan<?php $sexo = strval($row["sexo"]);
-                switch ($sexo) {
-                    case 'MASCULINO':
-                        echo "o";
-                        break;
-                    case 'FEMENINO':
-                        echo "a";
-                        break;
-                    default:
-                        echo "o";
-                        break;
-                } ?>:
-            <strong><?php echo $row["primer_nombre"] . " " . $row["segundo_nombre"] . " " . $row["primer_apellido"] . " " . $row["segundo_apellido"]; ?></strong>,
-            titular de la Cédula de
-            ídentidad <strong><?php echo "N° " . $row["tipo_documento"] . "-" . $row["numero_documento"] ?></strong>, presta sus
-            servicios para ésta
-            Alcaldía,
-            desde el
-            día
-            <strong><?php echo $row["dia_ingreso"] ?></strong> del mes de
-            <strong><?php
-                    $mes_ingreso = strval($row["mes_ingreso"]);
-                    switch ($mes_ingreso) {
-                        case '1':
-                            echo "ENERO";
-                            break;
-                        case '2':
-                            echo "FEBRERO";
-                            break;
-                        case '3':
-                            echo "MARZO";
-                            break;
-                        case '4':
-                            echo "ABRIL";
-                            break;
-                        case '5':
-                            echo "MAYO";
-                            break;
-                        case '6':
-                            echo "JUNIO";
-                            break;
-                        case '7':
-                            echo "JULIO";
-                            break;
-                        case '8':
-                            echo "AGOSTO";
-                            break;
-                        case '9':
-                            echo "SEPTIEMBRE";
-                            break;
-                        case '10':
-                            echo "OCTUBRE";
-                            break;
-                        case '11':
-                            echo "NOVIEMBRE";
-                            break;
-                        case '12':
-                            echo "DICIEMBRE";
-                            break;
-                    } ?></strong> del año <strong><?php echo $row["ano_ingreso"] ?></strong>, actualmente ocupa el cargo de
-            <strong><?php echo $row["cargo"] ?></strong>, (Contratado a Tiempo Determinado), con clasificación
-            <strong><?php echo $row["escala_remuneracion"] ?></strong>, devengando un salario mensual de
-            <?php
+<main>
+    <header class="header">
+        <img src="http://<?php echo $_SERVER['HTTP_HOST']; ?>/views/resources/images/membrete.jpg" alt=""
+            class="header__image">
+    </header>
+    <h1 class="main-title"><strong>CONSTANCIA DE TRABAJO</strong></h1>
+    <p class="paragraph">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Por medio de la presente se hace constar que 
+    <?php
+    if ($row["sexo"] === 'MASCULINO') {
+        echo "el";
+    } else {
+        echo "la";
+    }
+    ?> ciudadan<?php if ($row["sexo"] === "MASCULINO") {
+        echo "o";
+    } else {
+        echo "a";
+    }
+    ?>:
+        <strong>
+        <?php 
+        echo implode(" ", [$row["primer_nombre"], $row["segundo_nombre"], $row["primer_apellido"], $row["segundo_apellido"]]);
+        ?></strong>,
+        titular de la Cédula de
+        ídentidad <strong><?php echo "N° " . $row["tipo_documento"] . "-" . $row["numero_documento"] ?></strong>, presta
+        sus
+        servicios para ésta
+        Alcaldía,
+        desde el
+        día
+        <strong><?php echo $row["dia_ingreso"] ?></strong> del mes de
+        <strong><?php
+                $meses = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+                echo $meses[$row["mes_ingreso"]-1];
+                ?></strong> del año <strong><?php echo $row["ano_ingreso"] ?></strong>, actualmente ocupa el
+        cargo de
+        <strong><?php echo $row["cargo"] ?></strong>, (Contratado a Tiempo Determinado), con clasificación
+        <strong><?php echo $row["escala_remuneracion"] ?></strong>, devengando un salario mensual de
+        <?php
             $sueldo_letras = strval($row["sueldo_base"]);
             require_once("../CifrasEnLetras.php");
             $v = new CifrasEnLetras(200);
             $letra = ($v->convertirEurosEnLetras($sueldo_letras));
             ?>
-            <strong><?php echo $letra ?></strong>
-            <strong>(Bs. <?php echo $row["sueldo_base"]; ?>).</strong>
+        <strong><?php echo $letra ?></strong>
+        <strong>(Bs. <?php echo $row["sueldo_base"]; ?>).</strong>
+    </p>
+    <p class="paragraph paragraph--secound-paragraph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Constancia que se
+        expide a petición de
+        la parte interesada a los
+        <?php echo $days_of_the_month[date('d') - 1] ?> (<?php echo $current_day ?>) días del mes de
+        <?php echo $months[date("m") - 1] ?> del año dos mil veintitrés
+        (<?php echo $current_year ?>).</p>
+    <p class="paragraph paragraph--third-paragraph paragraph--centered-paragraph">Atentamente,</p>
+    <p class="paragraph paragraph--fourth-paragraph paragraph--centered-paragraph">
+        <strong>Lcda. Aura I. Briceño G.</strong><br>
+        Directora de Recursos Humanos<br>
+        Resolución N° 057-2023,<br>
+        Fecha del 09 de febrero del año 2023<br>
+    </p>
+    <footer class="footer">
+        <span class="validity-time"><i>Válido por tres (3) meses</i></span>
+        <p class="element-box">
+            <span class="control-signature"><i>AIBG/<?php echo $firma_operador; ?></i></span>
+            <span class="message"><strong>¡Ocumare Ciudad de Emprendedores...!</strong></span>
         </p>
-        <p class="paragraph paragraph--secound-paragraph">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Constancia que se expide a petición de
-            la parte interesada a los
-            <?php echo $days_of_the_month[date('d') - 1] ?> (<?php echo $current_day ?>) días del mes de
-            <?php echo $months[date("m") - 1] ?> del año dos mil veintitrés
-            (<?php echo $current_year ?>).</p>
-        <p class="paragraph paragraph--third-paragraph paragraph--centered-paragraph">Atentamente,</p>
-        <p class="paragraph paragraph--fourth-paragraph paragraph--centered-paragraph">
-            <strong>Lcda. Aura I. Briceño G.</strong><br>
-            Directora de Recursos Humanos<br>
-            Resolución N° 057-2023,<br>
-            Fecha del 09 de febrero del año 2023<br>
-        </p>
-        <footer class="footer">
-            <span class="validity-time"><i>Válido por tres (3) meses</i></span>
-            <p class="element-box">
-                <span class="control-signature"><i>AIBG/<?php echo $firma_operador; ?></i></span>
-                <span class="message"><strong>¡Ocumare Ciudad de Emprendedores...!</strong></span>
-            </p>
-            <address class="footer__address">Av. Miranda cruce con Av. Bolívar, frente el Templo Parroquia San Diego de
-                Alcalá, Casa de Gobierno.<br>
-                <a href="tel:+584142437040" class="footer__number-telephone"><strong>Teléfono
-                        0414-243.70.40</strong></a><br>
-                <a href="mailto:rrhhalcaldialander@gmail.com" class="footer__email"><strong>rrhhalcaldialander@gmail.com</strong></a>
-            </address>
-            <img src="http://<?php echo $_SERVER['HTTP_HOST']; ?>/views/resources/images/bandera-de-venezuela.png" alt="">
-        </footer>
-        <?php $numero_documento_trabajador = strval($row["numero_documento"]); ?>
-    </main>
+        <address class="footer__address">Av. Miranda cruce con Av. Bolívar, frente el Templo Parroquia San Diego de
+            Alcalá, Casa de Gobierno.<br>
+            <a href="tel:+584142437040" class="footer__number-telephone"><strong>Teléfono
+                    0414-243.70.40</strong></a><br>
+            <a href="mailto:rrhhalcaldialander@gmail.com"
+                class="footer__email"><strong>rrhhalcaldialander@gmail.com</strong></a>
+        </address>
+        <img src="http://<?php echo $_SERVER['HTTP_HOST']; ?>/views/resources/images/bandera-de-venezuela.png" alt="">
+    </footer>
+    <?php $numero_documento_trabajador = strval($row["numero_documento"]); ?>
+</main>
 <?php } ?>
 
 <body>
